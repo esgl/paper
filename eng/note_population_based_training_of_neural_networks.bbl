@@ -1,0 +1,10 @@
+\begin{thebibliography}{1}
+
+\bibitem{Jaderberg2017Population}
+Jaderberg Max, Dalibard Valentin, Osindero Simon, M.Czarnecki Wojciech, Donahue
+  Jeff, Razavi Ali, Vinyals Oriol, Green Tim, Dunning Iain, Simonyan Karen,
+  Fernando Chrisantha, and Kavukcuoglu Koray.
+\newblock Population based training of neural networks.
+\newblock 2017.
+
+\end{thebibliography}

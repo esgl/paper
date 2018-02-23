@@ -1,0 +1,15 @@
+\begin{thebibliography}{1}
+
+\bibitem{Mnih2013Playing}
+Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
+  Antonoglou, Daan Wierstra, and Martin Riedmiller.
+\newblock Playing atari with deep reinforcement learning.
+\newblock {\em Computer Science}, 2013.
+
+\bibitem{Tsitsiklis2002An}
+J.~N. Tsitsiklis and B.~Van Roy.
+\newblock An analysis of temporal-difference learning with function
+  approximation.
+\newblock {\em IEEE Transactions on Automatic Control}, 42(5):674--690, 2002.
+
+\end{thebibliography}

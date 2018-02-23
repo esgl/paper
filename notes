@@ -1,0 +1,7 @@
+Exploration remains a key challenge in contemporary deep reinforcement learning. Its main purpose is to ensure that the agent's behavior does not converge prematurely to a local optimum.
+
+Off-policy
+off-policy RL mthods allow learning based on data captured by arbitrary policies. et. DQN, DDPG
+
+On-policy
+on-policy methods required updating function approximators according to the currently followed policy. et. TRPO (trust region policy optimization)

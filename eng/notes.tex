@@ -1,0 +1,168 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Markov Decision Processes (MDP)}
+\author{esgl Hu}
+\maketitle
+
+\section{Playing Atari with Deep Reinforcment Learning  \cite{Mnih2013Playing}}
+\paragraph{} Firstly, most successful deep learning applications to date have \uline{required large amounts of hand-labelled training data.} \textcircled{1} \uline{RL algorithms}, on the other hand, \uline{must be able to learn from \textbf{a scalar reward signal}} that is \uline{frequently\textbf{ \textit{sparse, noisy and delayed}}}. The delay between actions and resulting rewards, with can be thousands of timesteps long, seems particularly daunting when compared to the direct association between inputs and tagets found in supervised learning. Another issue is that most \textcircled{2} \uline{deep learning algorithms assume the data samples to be \textbf{\textit{independent}}, while in reinforcement learning one typically encounters sequences of \textbf{\textit{high correlated states}}}. Furthermore, \textcircled{3} \uline{in RL the \textbf{\textit{data distribution changes}} as the algorithm learns new behaviours, which can be problematic for deep learning methods that assume\textbf{\textit{ a fixed underlying distrbituion}}.}
+
+\paragraph{}\textcircled{4} To avaeviate the problems of \uline{\textbf{correlated data and non-stationary distributions}}, it uses an \uline{\textbf{experience replay mechanism}} which \uline{randomly samples previous transitions, and thereby smotths the training distribution over many past behaviors}.
+
+\paragraph{}It was shown that combining model-free reinforcement learning algorithms such as Q-learning with \uline{non-linear function approximators}, or indeed with \uline{off-policy learning} could cause \uline{the Q-network to \textbf{\textit{diverge}}}. Subsequently, the majority of work in reinforcement learning focused on linear function approximators with better convergence guarantees. \cite{Tsitsiklis2002An}
+
+\begin{equation}\label{Q*_s_a}
+\mathnormal{Q}^{*}(s,a) = \mathbb{E}_{s^{'} \sim \mathcal{E}}[r + \gamma max_{a^{'}} \mathnormal{Q^{*}}(s^{'}, a^{'})|s, a]
+\end{equation}
+\begin{equation}
+L_{i}(\theta_{i}) = \mathbb{E}_{s, a \sim \rho(\cdot)}[(y_{i} - \mathnormal{Q}(s, a; \theta_{i}))^{2}]
+\end{equation}
+
+\begin{equation} \label{L_i_theta_i}
+\nabla_{\theta_{i}}L_{i}(\theta_{i})=\mathbb{E}_{s,a \sim \rho(\cdot); s^{'} \sim \mathcal{E}}[(r + \gamma max_{a^{'}}\mathnormal{Q}(s^{'}, a^{'}; \theta_{i-1}) - \mathnormal{Q}(s, a; \theta_{i}))\nabla_{\theta_{i}}\mathnormal{Q}(s,a; \theta_{i})],
+\end{equation}
+where $y_i = \mathbb{E}_{s^{'} \sim \mathcal{E}}[r + \gamma max_{a^{'}} \mathnormal{Q}(s^{'}, a^{'}; \theta_{i-1})|s,a]$
+
+\begin{algorithm}
+	\caption{Deep Q-learning with Experience Replay}
+	\begin{algorithmic}                                                                                                   
+		\State Initialize replay memory $\mathnormal{D}$ to capacity $N$
+		\State Initialize action-value function $\mathnormal{Q}$ with random weights
+		\For{episode = $1, M$} 
+			\State{Initialise sequence $s_1 = \{x_{1}\}$ and preprocessed sequenced $\phi_{1} = \phi(s_{1})$}
+			\For $t = 1, T$
+				\State With probability $\epsilon$ select a random action $a_t$
+				\State otherwise select $a_t = max_{a}\mathnormal{Q}^{*}(\phi(s_{t}), a; \theta)$
+				\State Execute action $a_t$ in emulator and observe reward $r_{t}$ and image $x_{t+1}$
+				\State Set $s_{t+1} = s_{t}, a_{t}, x_{t+1}$ and preprocess $\phi_{t+1} = \phi(s_{t+1})$
+				\State Store transition $(\phi_{t}, a_{t}, r_{t}, \phi_{t+1}) $ in $\mathnormal{D}$
+				\State Sample random minibatch of transitions $(\phi_{j}, a_{j}, r_{j}, \phi_{j+1})$ from $\mathnormal{D}$
+				\State Set $$y_{j} = \left\{
+				\begin{array}{ll}
+				r_{j} & \text{for terminal} \quad \phi_{t+1} \\
+				r_{j} + \gamma max_{a^{'}}\mathnormal{Q}(\phi_{j+1}, a^{'}; \theta) &  \text{for non-terminal} \quad \phi_{j+1}
+				
+				\end{array}\right.
+				$$
+				\State Perform a gradient descent step on $(y_{i} - \mathnormal{Q}(\phi_{j}, a_{j}; \theta))^{2}$ according to equation (\ref{L_i_theta_i})
+			\EndFor
+		\EndFor
+		
+	\end{algorithmic}
+\end{algorithm} 
+
+\begin{algorithm}
+	\caption{deep Q-learning with experience replay.}
+	\begin{algorithmic}
+	\State Initialize replay memory $D$ to capacity $N$
+ 	\State Initialize action-value $Q$ with random weights $\theta$ 
+ 	\State Initialize target action-value function $Q$ with weights $\theta^{-} = \theta$
+ 	\For{$t = 1, T$}
+ 		\State With probability $\epsilon$ select a random action $a_{t}$
+ 		\State otherwise select $a_{t} = argmax_{a}Q(\phi(s_{t}), a; \theta)$
+ 		\State Execute action $a_{t}$ in emulator and observe reward $r_{t}$ and image $x_{t+1}$
+ 		\State Set $s_{t+1} = s_{t}, a_{t}, x_{t+1}$ and preprocess $\phi_{t+1} = \phi(s_{t+1})$
+ 		\State Store transition $(\phi_{t}, a_{t}, r_{t}, \phi_{t+1})$ in $D$
+ 		\State Sample random minibatch of transitons $(\phi_{j}, a_{j}, r_{j}, \phi_{j+1})$ from $D$
+ 		\State set $$y_{j} = \left\{ 
+			\begin{array}{cc}
+			r_{j} & \text{if episode terminates at step} j+1 \\
+			r_{j} + \gamma max_{a^{'}}Q(\phi_{j+1}, a^{'}; \theta^{-}) & \text{otherwise}
+			\end{array}\right.
+ 		$$
+ 		\State Perform a gradient descent step on $(y_{i} - Q(\phi_{j}, a_{j}; \theta))^{2}$ with respect to the network parameters $\theta$
+ 		\State Every $C$ step reset $\hat{Q} = Q$
+ 	\EndFor
+	\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+	\caption{Double DQN with proportional prioritization}	
+	\begin{algorithmic}
+	\Require minibatch $k$, step-size $\eta$, replay period $K$ and size $N$, exponents $\alpha$ and $\beta$, budget $T$.
+	\State Initialize replay memory $\mathcal{H} = \Phi, \Delta=0, p_{1} = 1$
+	\State Observe $S_{0}$ and choose $A_{0} \sim \pi(S_{0})$
+	\For{$t = 1 to T$}
+		\State Observe $S_{t}, R_{t}, \gamma_{t}$
+		\State Store transition $(S_{t-1}, A_{t-1}, R_{t}, \gamma_{t}, S_{t})$ in $\mathcal{H}$ with maximal priority $p_t = max_{i<t}p_{i}$
+		\If{t $\equiv$ $0$ mod $K$}
+			\For{$j = 1 to k$}
+				\State Sample transition $j \sim P(j) = {p_{j}}^{\alpha} / \sum_{i}{p_{i}}^{\alpha}$
+				\State Compute importance-sampling weight $w_{j}=(N \cdot P(j))^{-\beta}/max_{i}w_{i}$
+				\State Compute TD-error $\delta_{j} = R_{j} + \gamma_{j}Q_{target}(S_{j}, argmax_{a}Q(S_{j}, a)) - Q(S_{j-1}, A_{j-1})$
+				\State Update transition priority $p_{j} \leftarrow |\delta_{j}|$
+				\State Accumulate weight-change $\Delta \leftarrow \Delta + w_{j} \cdot \delta_{j} \cdot \nabla_{\theta}Q(S_{j-1}, A_{j-1})$
+			\EndFor
+			\State Update weights $\theta \leftarrow \theta + \eta \cdot \Delta$, reset $\Delta = 0$
+			\State From time to time copy weights into target network $\theta_{target} \leftarrow \theta$
+		\EndIf
+		\State Choose action $A_{t} \sim \pi_{\theta}(S_{t})$
+	\EndFor
+	
+	\end{algorithmic}
+\end{algorithm}
+
+\paragraph{The disadvatages of Q-learning}
+\begin{itemize}
+\item Overestimate
+\item Underestimate 
+\end{itemize}
+
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,76 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Notes: Model-Free Episodic Control\cite{Blundell2016Model}}
+\author{esgl Hu}
+\maketitle
+
+\section{Episodic Control}
+\paragraph{}Episodic control is a complementary approach that can rapidly re-enact observed, successful policies. Episodic control records highly rewarding experiences and follows a policy that replays sequences of actions that previously yielded high returns.
+
+\paragraph{} \uline{Domain of applicability of episodic control may be hopelessly limited by the complexity of the world. \textcolor{red}{In real environments the same exact situation is rarely. if ever}, revisited, In RL terms, repeated visits to the exactly the same state are also extremely rare.}
+
+\section{Algorithm}
+\paragraph{}$Q^{\text{EC}}(s,a)$ is a table that each entry in it contains the highest return over obtained by taking action $a$ from state $s$. At the end of each episode, $Q^{\text{EC}}$ is updated according to the return received as follow:
+\begin{equation}\label{Q_EC_S_T_A_T}
+Q^{\text{EC}}(s_{t}, a_{t}) \leftarrow \left\lbrace
+\begin{array}{lcl}
+R_{t}                            & & \text{if } (s_{t}, a_{t}) \notin Q^{\text{EC}},\\
+\text{max}\{Q^{\text{EC}}(s_{t}, a_{t}), R_{t}\} & & \text{otherwise},
+\end{array}\right.
+\end{equation}
+where $r_{t}$ is the discounted return received after taking action $a_{t}$ in state $s_{t}$. Note that (\ref{Q_EC_S_T_A_T}) is not suited to a general purpose RL learning update: \textbf{\textcolor{red}{\uline{since the stored value can never decrease, it is not suited to rational action selection in stochastic environment. }}}
+
+\paragraph{}Tabular RL methods suffer from two key deficiencies:
+\begin{enumerate}
+	\item \uline{for large probles they consume a large amount of memory;}
+	\item \uline{they lack a way to generalise across similar states.}
+\end{enumerate}
+To address the first problem, we limit the size of the table by \uline{removing the least recently updated entry} once a maximum size has been reached.
+
+\paragraph{}For states that have never been visited, $Q^{EC}$ is approximated by averaging the value of the $k$ nearest states. Thus if $s$ is a novel state then $Q^{EC}$ is estimated as 
+\begin{equation}\label{hat_Q_EC_S_A}
+\widehat{Q^{\text{EC}}}(s, a) = \left\lbrace
+\begin{array}{lcl}
+\frac{1}{k}\sum_{i=1}^{k}Q^{\text{EC}}(s^{(i)}, a) & & \text{if } (s,a) \notin Q^{\text{EC}},\\
+Q^{\text{EC}}(s,a) & & \text{otherwise,}
+\end{array} \right.
+\end{equation}
+where $s^{(i)}, 1 = 1, ..., k$ are the $k$ states with the smallest distance to state $s$
+\begin{algorithm}
+	\caption{Model-Free Episodic Control}
+	\begin{algorithmic}
+		\For{each episodic}
+			\For{$t=1, 2, 3, ..., T$}
+				\State Recieve observation $o_{t}$ from environment.
+				\State Let $s_{t} = \phi(o_{t})$
+				\State Estimate return for each action $a$ via (\ref{hat_Q_EC_S_A})
+				\State Let $a_{t} = \text{arg max}_{a}\widehat{Q^{\text{EC}}}(s_{t},a)$
+				\State Take action $a_{t}$, receive reward $r_{t+1}$
+			\EndFor
+			\For{$t = T, T - 1, ..., 1$}
+				\State Update $Q^{\text{EC}}(s_{t}, a_{t})$ using $R_{t}$ according to (\ref{Q_EC_S_T_A_T})
+			\EndFor
+		\EndFor
+	\end{algorithmic}
+\end{algorithm}
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

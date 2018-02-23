@@ -1,0 +1,76 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Notes: Population Based Training of Neural Networks\cite{Jaderberg2017Population}}
+\author{esgl Hu}
+\maketitle
+\section{Population Based Training}
+\paragraph{}The most common formulation in machine learning is to optimise the parameters $\theta$ of a model $f$ to maximise a given objective function $\hat{\mathcal{Q}}$, Generally, the trainable parameters $\theta$ are updated using an optimisation procedure such as stochasitc gradient descent. More importantly, the actual performance metric $\mathcal{Q}$ that we truely care to optimise is often different to $\hat{\mathcal{Q}}$.
+
+\paragraph{} We consider training $N$ models $\{\theta^{i}\}_{i=1}^{N}$ forming a $population \mathcal{Q}$ which are optimised with different hyperparameters $\{\mathbb{h}^{i}\}_{i=1}^{N}$, the object is to therefore find the optimal model across the entire population.
+
+\paragraph{} the function \underline{$\mathit{eval}$} is used to evaluate the objective function, $\mathcal{Q}$, using the current state of model $f$.
+the process of finding the optimal set of parameters that maximise $\mathcal{Q}$ is then:
+\begin{equation}\label{arg_max_eval_theta}
+	\theta^{*} = \text{arg max}_{\theta \in \Phi} \mathit{eval}(\theta)
+\end{equation}
+
+\paragraph{} the function \underline{$\mathit{step}$} is used to update the parameters of the model, and is itself conditioned on some parameters $h \in \mathcal{H}$. iterations of paramters update steps:
+\begin{equation}\label{step_function}
+	\theta \leftarrow \mathit{step}(\theta|h)
+\end{equation}
+
+\paragraph{} the function \underline{$\mathit{exploit}$}, which, given peformance of the whole population, can decide whether the worker should abandon the current solution and istead focus on a more promising one. For expamle, $\mathit{exploit}$ could replace the current weights with the weights that have the highest recorded performance in the rest of the population.
+\paragraph{} the function \underline{$\mathit{explore}$}, which given the current solution and hyperparameters proposes new ones to better explore the solution space. For example, $\mathit{explore}$ could randomly perturb the hyperparamters with noise.
+
+\paragraph{} the member of population is deemed \underline{$\mathit{ready}$} (for example. by having been optimised for a minimum number of steps or having reached a certain performance threshold). 
+
+\paragraph{} The specific form of $\mathit{exploit}$ and $\mathit{explore}$ depends on the application. In this work we focus on optimising neural networks for reinforcement learning , supervised learning, and generative modelling with PBT. In these cases, $\mathit{step}$ is a step of grdient descent, $\mathit{eval}$ is the mean episodic return or validation set performance of the metric we aim to optimise, $\mathit{exploit}$ selects another member of the population copy the weights and hyperparameters from, and $\mathit{explore}$ creats new hyperparameters for the next steps of gradient-based learning by either perturbing the copied hyperparameters or resampling hyperparameters from the originally defined prior distribution. A member of the population is deemed $\mathit{ready}$ to exploit and explore when it has been trained with gradient descent for a number of steps since the last change to the hyperparameters, such that the number of steps is large enough to allow signification gradient-based learning to have occurred.
+
+\section{Advantage of Population Based training}
+\paragraph{}By combining multiple steps of gradient descent followed by weight copying by $\mathit{exploit}$, and perturbation of hyperparameters by $\mathit{explore}$, we obtain learning algorithms which benefit from not only \uline{local optimisation by gradient descent}, but also \uline{periodic model selection}, and \uline{hyperparameter refinement} from a process that is more similar to genetic algorithms, creating a two-timescale learning system. An important property of population based training is that \uline{it is asynchronous and does not require a centralised process to orchestrate the training of the members of the population. Only the current performance information, weights, and hyperparamters must be globally available for each population memebr to access} - crucially there is no synchronisation of th population required.
+\section{Algorithm}
+\begin{algorithm}
+	\caption{Population Based Training(PBT)}
+	\begin{algorithmic}[1]
+	\Function{TRAIN}{$\mathcal{P}$}
+		\For {$(\theta, h, p, t) \in \mathcal{P}$ (asynchronously in parallel)}
+			\While{not end of training}
+				\State $\theta \leftarrow \mathit{step}(\theta|h)$
+				\State $p \leftarrow \mathit{eval}(\theta)$ 
+				\If{$\mathit{ready}(p, t,\mathcal{P})$}
+					\State $h^{'}, \theta^{'} \leftarrow \mathit{exploit}(h, \theta, p, \mathcal{P})$
+					\If{$\theta \neq \theta^{'}$}
+						\State $h, \theta \leftarrow \mathit{explore}(h^{'}, \theta^{'}, \mathcal{P})$
+						\State $p \leftarrow \mathit{eval}(\theta)$
+					\EndIf
+				
+				\EndIf
+				\State update $\mathcal{P}$ with new $(\theta, h, p, t + 1)$
+			\EndWhile
+		\EndFor
+		\State \Return $\theta$ with the highest $p$ in $\mathcal{P}$
+	\EndFunction
+	\end{algorithmic}
+\end{algorithm}
+
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

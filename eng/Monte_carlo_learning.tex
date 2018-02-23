@@ -1,0 +1,47 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Monte Carlo Learning (MC Learning)}
+\author{esgl Hu}
+\maketitle
+\paragraph{}Monte Carlo methods require only \textit{experience} --- sample sequences of states, actions, and rewards from actual or simulated interaction with an environment. \textcolor{red}{It requires no prior knowledge of the environment's dynamics, yet can still attain optimal behavior.}
+\paragraph{}If a model is not avaliable, then it is particularly useful to estimate \textit{action} values (the values of state-action pairs) rather than \textit{state} values. \uline{With a model, state values alone are sufficient to determine a policy;} one simply looks abead one step and chooses whichever action leads to the best combination of reward values and next state. \uline{Without a model, however, state values alone are not sufficient.}
+
+\begin{algorithm}
+	\caption{First-visit MC policy evaluation (returns $V \sim v_{\pi}$)}
+	\begin{algorithmic}
+	\State Initialize $\pi \leftarrow$ policy to be evaluated
+	\State Initialize $V \leftarrow$ an arbitrary state-value function
+	\State Initialize $Returns(s) \leftarrow$ an empty list, for all $s \in \mathcal{S}$
+	\While {True}
+	\State Generate an episode using $\pi$
+	\For{each state $s$ appearing in the episode}
+		\State $G \leftarrow$ return following the first occurrence of $s$
+		\State Append $G$ to $Returns(s)$
+		\State $V(s) \leftarrow average(Returns(s))$
+	\EndFor
+	\EndWhile
+	\end{algorithmic}
+
+\end{algorithm}
+
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

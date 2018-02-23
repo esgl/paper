@@ -1,0 +1,9 @@
+\begin{thebibliography}{1}
+
+\bibitem{MnihBMGLHSK16}
+Volodymyr Mnih, Adri{\`{a}}~Puigdom{\`{e}}nech Badia, Mehdi Mirza, Alex Graves,
+  Timothy~P. Lillicrap, Tim Harley, David Silver, and Koray Kavukcuoglu.
+\newblock Asynchronous methods for deep reinforcement learning.
+\newblock {\em CoRR}, abs/1602.01783, 2016.
+
+\end{thebibliography}

@@ -1,0 +1,36 @@
+\ifx\allfiles\undefined
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+\begin{document}
+\title{Markov Decision Processes (MDP)}
+\author{esgl Hu}
+\maketitle
+\fi
+\section{Notation \& Definition}
+\paragraph{} A reinforcement learning task taht satisfies the Markov property 
+is called a \textit{Markov decision process}, or \textit{MDP}. If the state and action spaces are finite, then it is called a \textit{finite Markov decision process (finite MDP)}
+\paragraph{}Given any state and actin \textit{s} and \textit{a}, the probability of each possible pair of next state and reward, $s^{'}$, $r$, is denoted
+\begin{equation}\label{p_s_r_s_a}
+p(s^{'},r|s,a) \doteq Pr(\{S_{t+1}=s^{'},R_{t+1}=r|S_{t}=s, A_{t}=a\})
+\end{equation}
+\paragraph{}Given the dynamics as specified by (\ref{p_s_r_s_a}), one can compute anything else one might want to know about the environment, such as the expected rewards for state-action pairs.
+\begin{equation}\label{r_s_a}
+r(s,a) \doteq \mathbb{E}[R_{t+1}|S_{t}=s,A_{t}=a] = \sum_{r \in \mathcal{R}}r\sum_{s^{'} \in \mathcal{S}}p(s^{'},r|s,a),
+\end{equation}
+the \textit{state-transition probabilities},
+\begin{equation}\label{p_s_s_a}
+p(s^{'}|s,a) \doteq Pr\{S_{t+1}=s^{'}|S_{t}=s,A_{t}=a\}=\sum_{r \in \mathcal{R}}p(s^{'},r|s,a)
+\end{equation}
+and the expected rewards for state-action-next-state triples,
+\begin{equation}\label{r_s_a_s}
+r(s,a,s^{'}) \doteq \mathbb{E}[R_{t+1}|S_{t}=s,A_{t}=a,S_{t+1}=s^{'}] = \frac{\sum_{r \in \mathcal{R}}rp(s^{'},r|s,a)}{p(s^{'}|s,a)}
+\end{equation}
+\ifx\allfiles\undefined
+\end{document}
+\fi

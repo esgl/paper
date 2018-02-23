@@ -1,0 +1,75 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Notes: Neural Episodic Control}
+\author{esgl Hu}
+\maketitle
+\section{The problems of existing reinforcement learning algorithms} \cite{Pritzel2017Neural}
+\begin{enumerate}
+			\item Stochastic gradient descent optimisation requires the use of small learning rates. Due to the global approximation nature of neural networks, high learning rates cause catastrophic interference. Low learning rates mean that experience can only be incorporated into a neural network slowly.
+			\item Environments with sparse reward signal can be difficult for a neural network to model as there may be very few instances where the reward is non-zero. This can be viewed as a form of class imbalance where low-reward samples outnumber high-reward samples by an unknown number. Consquently. the neural network disproportionaly underperforms at predicting larger rewards, making it difficult for an agent to take the most rewarding actions.
+			\item Reward signal propagation by value-boostrapping techniques, such as Q-learning, results in reward information being propagated one step at a time through the history of previous interactions with the environment. This can be fairly efficient if updates happen in reverse order in which the transitions occur. However, in order to train on randomly selected transitions, and, in order to further stabilise training, required the use of a slowlu updating \textit{target network} further slowing down reward propagation.
+\end{enumerate}
+
+\section{Algorithms}
+\paragraph{} DND: \textit{lookup} and \textit{write}. Performing a lookup on a DND maps a key $k$ to an output value $o$:
+\begin{equation}\label{equation_1}
+o = \sum_{i}w_{i}v_{i}
+\end{equation}
+where $v_{i}$ is the \textit{i}th element of the array $V_{a}$ and 
+\begin{equation} \label{equation_2}
+w_{i} = \frac{k(h, h_{i})}{\sum_{j}(h, h_{j})}
+\end{equation}
+where $h_{i}$ is the \textit{i}th element of the array $K_{a}$ and $k(x, y)$ is a kernel between vectors $x$ and $y$, e.g., Gaussian or inverse kernels. for example, 
+\begin{equation}
+k(h, h_{i}) = \frac{1}{{\Vert h - h_{i} \Vert}_{2}^{2} + \delta}
+\end{equation}
+
+\paragraph{}The $N$-step $Q$-value estimate is then
+\begin{equation} \label{N_Step_Q_learning}
+Q^{(N)}(s_{t}, a_{t}) = \sum_{j=0}^{N-1}\gamma^{j}r_{t+j} + \gamma^{N} max_{a^{'}} Q(s_{t+N}, a^{'})
+\end{equation}
+
+\paragraph{}The classic tabular $Q$-learning algorithm:
+\begin{equation}\label{classic_tabular_q_learning}
+Q_{i} \leftarrow Q_{i} + \alpha (Q^{(N)}(s, a) - Q_{i})
+\end{equation}
+\begin{algorithm}
+	\caption{Neural Episodic Control}
+	\begin{algorithmic}
+	\State $\mathcal{D}$: replay memory.
+	\State $M_{a}$: a DND for each action $a$.
+	\State $N$: horizon for $N$-step $Q$ estimate.
+	\For {each episode}
+		\For {$t = 1, 2, ..., T$}
+			\State Receive observation $s_{t}$ from environment wirh embedding $h$.
+			\State Estimate $Q(s_{t}, a)$ for each action $a$ via (\ref{equation_1}) from $M_{a}$.
+			\State $a_{t} \leftarrow \epsilon-$greedy policy based on $Q(s_{t}, a)$.
+			\State Take action $a_{t}$, receive reward $r_{t+1}$.
+			\State Append $(h, Q^{(N)}(s_{t}, a_{t}))$ to $M_{a_{t}}$.
+			\State Append $(s_{t}, a_{t}, Q^{(N)}(s_{t}, a_{t}))$ to $\mathcal{D}$.
+			\State Train on a random minibatch from $\mathcal{D}$.
+		\EndFor
+	\EndFor
+	\end{algorithmic}
+\end{algorithm}
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

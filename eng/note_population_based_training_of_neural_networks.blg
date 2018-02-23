@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99d (TeX Live 2015/Debian)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: note_population_based_training_of_neural_networks.aux
+The style file: plain.bst
+Database file #1: reference.bib
+Warning--empty journal in Jaderberg2017Population
+You've used 1 entry,
+            2118 wiz_defined-function locations,
+            502 strings with 4411 characters,
+and the built_in function-call counts, 569 in all, are:
+= -- 42
+> -- 63
+< -- 0
++ -- 25
+- -- 24
+* -- 55
+:= -- 113
+add.period$ -- 3
+call.type$ -- 1
+change.case$ -- 15
+chr.to.int$ -- 0
+cite$ -- 2
+duplicate$ -- 10
+empty$ -- 18
+format.name$ -- 24
+if$ -- 98
+int.to.chr$ -- 0
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 8
+num.names$ -- 2
+pop$ -- 17
+preamble$ -- 1
+purify$ -- 14
+quote$ -- 0
+skip$ -- 7
+stack$ -- 0
+substring$ -- 5
+swap$ -- 0
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 4
+warning$ -- 1
+while$ -- 2
+width$ -- 2
+write$ -- 11
+(There was 1 warning)
