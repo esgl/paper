@@ -1,3 +1,4 @@
+\ifx\allfiles\undefined
 \documentclass[12pt,a4paper]{article}
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -21,12 +22,17 @@
 \title{Neural K-Nearest Neibhorhood Training}
 \author{Guannan Hu}
 \maketitle
-\section{Introduction}
-\section{Relate works}
-\section{Neural K-Nearest Neighbor Training}
-\section{Experiment}
-\section{Conclusion}
+\fi
+
+\input{abstract}
+\input{introduction}
+\input{relate_works}
+\input{neural_knn_training}
+\input{experiments}
+\input{conclusion}
 
 \bibliographystyle{plain}
 \bibliography{reference}
+\ifx\allfiles\undefined
 \end{document}
+\fi
