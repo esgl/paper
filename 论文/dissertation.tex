@@ -2,12 +2,17 @@
 \def\allfiles{}
 \usepackage{CJK}
 \usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage{algorithmicx}
 
 \geometry{a4paper,left=2cm,right=2cm,top=1cm,bottom=1cm}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
 \begin{document}
 \begin{CJK*}{GBK}{song}
 \renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
-\title{\huge{基于k最近邻训练的深度Q学习}}
+\title{\huge{基于$K$最近邻训练的深度$\mathnormal{Q}$学习}}
 \maketitle
 \input{introduction_neural_knn_training}
 \input{algorithm_neural_knn_training}

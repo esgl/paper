@@ -1,11 +1,24 @@
-\documentclass{book}
-\usepackage{ctex}
+\documentclass[a4paper]{article}
+\def\allfiles{}
+\usepackage{CJK}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage{algorithmicx} 
 
+\geometry{a4paper,left=2cm,right=2cm,top=1cm,bottom=1cm}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
 \begin{document}
-\title{基于k-最近邻的深度Q学习}
-\author{胡冠男\\上海大学计算机工程与科学学院\\texttt{esgl@i.shu.edu.cn}}
-\date
+\begin{CJK*}{GBK}{song}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+\title{\huge{基于K最近邻训练的深度$\mathnormal{Q}$学习}}
 \maketitle
-中文English
-\[E = m c^2\]
+\input{introduction_neural_knn_training}
+\input{algorithm_neural_knn_training}
+\input{result_neural_knn_training}
+\end{CJK*}
+\bibliographystyle{plain}
+\bibliography{reference}
 \end{document}
+

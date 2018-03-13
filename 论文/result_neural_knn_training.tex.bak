@@ -1,0 +1,26 @@
+\ifx\allfiles\undefined
+\documentclass[a4paper]{article}
+\usepackage{CJK}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{algorithm}
+\usepackage{algorithmicx} 
+
+\geometry{a4paper,left=2cm,right=2cm,top=1cm,bottom=1cm}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+\title{\huge{基于K最近邻训练的深度$\mathnormal{Q}$学习}}
+\maketitle
+\fi
+\section{实验结果}将算法应用在Atari 2600的游戏上，结果表明相较于Prioritised Replay和Retrace($\lambda$), 基于k最近邻训练的经验回放机制KND将相似状态的样本数据合并，得到一个更加合理的激励，基于KND的回放机制具有更高的样本利用效率，提高了模型的训练效率。
+\paragraph{}
+\ifx\allfiles\undefined
+\end{CJK*}
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+\fi
+

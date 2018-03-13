@@ -1,9 +1,7 @@
-This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2018.3.12)  13 MAR 2018 10:41
+This is pdfTeX, Version 3.1415926-2.3-1.40.12 (MiKTeX 2.9) (preloaded format=pdflatex 2018.3.12)  13 MAR 2018 11:01
 entering extended mode
-**introduction_neural_knn_training.tex
-
-(C:\Users\Administrator\Desktop\paper\论文\introduction_neural_knn_training.t
-ex
+**result_neural_knn_training.tex
+(C:\Users\Administrator\Desktop\paper\论文\result_neural_knn_training.tex
 LaTeX2e <2011/06/27>
 Babel <v3.8m> and hyphenation patterns for loaded.
 (C:\CTEX\MiKTeX\tex\latex\base\article.cls
@@ -102,9 +100,7 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 \c@ALG@storecount=\count97
 \c@ALG@tmpcounter=\count98
 \ALG@tmplength=\skip45
-)
-(C:\Users\Administrator\Desktop\paper\论文\introduction_neural_knn_training.a
-ux)
+) (C:\Users\Administrator\Desktop\paper\论文\result_neural_knn_training.aux)
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
 LaTeX Font Info:    ... okay on input line 12.
 LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
@@ -246,24 +242,23 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 LaTeX Warning: No \author given.
 
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <7> on input line 21.
+(Font)              <7> on input line 18.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <5> on input line 21.
-No file introduction_neural_knn_training.bbl.
+(Font)              <5> on input line 18.
+No file result_neural_knn_training.bbl.
 [1
 
 {C:/CTEX/UserData/pdftex/config/pdftex.map{Unicode.sfd}{UGBK.sfd}}]
-(C:\Users\Administrator\Desktop\paper\论文\introduction_neural_knn_training.a
-ux) )
-(\end occurred when \ifx on line 22 was incomplete) 
+(C:\Users\Administrator\Desktop\paper\论文\result_neural_knn_training.aux) )
+(\end occurred when \ifx on line 20 was incomplete) 
 Here is how much of TeX's memory you used:
- 2512 strings out of 495354
- 31948 string characters out of 3183859
- 94399 words of memory out of 3000000
- 5654 multiletter control sequences out of 15000+200000
- 23373 words of font info for 80 fonts, out of 3000000 for 9000
+ 2376 strings out of 495354
+ 29212 string characters out of 3183859
+ 86399 words of memory out of 3000000
+ 5526 multiletter control sequences out of 15000+200000
+ 21285 words of font info for 73 fonts, out of 3000000 for 9000
  14 hyphenation exceptions out of 8191
- 23i,6n,28p,716b,387s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 23i,6n,28p,305b,387s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/CTEX/CTeX/fonts/truetype
 /chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CT
 eX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsu
@@ -279,19 +274,15 @@ TEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese
 ese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fo
 nts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf
 ><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/c
-hinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX
-/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.
-ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetyp
-e/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/C
-TeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/sims
-un.ttf><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/CTEX/MiKTe
-X/fonts/type1/public/amsfonts/cm/cmmi10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/
-amsfonts/cm/cmmi12.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb
-><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr12.pfb><C:/CTEX/MiKTeX/fonts
-/type1/public/amsfonts/cm/cmr17.pfb>
-Output written on introduction_neural_knn_training.pdf (1 page, 167583 bytes).
+hinese/simsun.ttf><C:/CTEX/CTeX/fonts/truetype/chinese/simsun.ttf><C:/CTEX/MiKT
+eX/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C:/CTEX/MiKTeX/fonts/type1/public
+/amsfonts/cm/cmmi10.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmmi12.p
+fb><C:/CTEX/MiKTeX/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/CTEX/MiKTeX/fon
+ts/type1/public/amsfonts/cm/cmr12.pfb><C:/CTEX/MiKTeX/fonts/type1/public/amsfon
+ts/cm/cmr17.pfb>
+Output written on result_neural_knn_training.pdf (1 page, 126989 bytes).
 PDF statistics:
- 158 PDF objects out of 1000 (max. 8388607)
+ 130 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 

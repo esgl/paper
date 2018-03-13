@@ -2,15 +2,29 @@
 \documentclass[a4paper]{article}
 \usepackage{CJK}
 \usepackage{geometry}
-
+\usepackage{indentfirst}
 \geometry{a4paper,left=2cm,right=2cm,top=1cm,bottom=1cm}
+\setlength{\parskip}{0em}
+\setlength{\parindent}{2em}
 \begin{document}
 \begin{CJK*}{GBK}{song}
 \renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
-\title{\huge{基于k最近邻训练的深度Q学习}}
+\title{\huge{基于$K$最近邻训练的深度$\mathnormal{Q}$学习}}
 \maketitle
 \fi
 \section{算法}
+\paragraph{}$\mathnormal{Q}$学习的最优动作-价值函数：
+\begin{equation}\label{Q*_s_a}
+\mathnormal{Q}^{*}(s,a) = \textbf{E}_{s^{'} \sim \xi}[r + \gamma \cdot max_{a^{'}} \mathnormal{Q}^{*}(s^{'},a^{'})|s,a]
+\end{equation}
+\begin{equation}\label{L_theta}
+L_{i}(\theta_{i}) = \textbf{E}_{s,a \sim \rho(\cdot)}[(y_{i} - \mathnormal{Q}(s,a;\theta_{i}))^{2}]
+\end{equation}
+\begin{equation}\label{delta_L_theta}
+\nabla_{\theta_{i}}L_{i}(\theta_{i}) = \textbf{E}_{s,a \sim \rho(\cdot);s^{'} \sim \xi}[(y_{i} - \mathnormal{Q}(s,a;\theta_{i}))\nabla_{\theta_{i}}\mathnormal{Q}(s,a;\theta_{i})]
+\end{equation}
+
+\paragraph{}基于$K$最近邻训练深度$\mathnormal{Q}$学习方法中，设置一个$K$最近邻字典（KND，$K$-nearest Neighbourhood Dict），KND支持查询和写操作，通过状态$key$ 查询到$K$ 最近邻的激励集合$V_{a}$和状态集合$K_{a}$，状态$key$的激励$r=\sum_{i} w_{i}v_{i}$, $v_{i}$是$V_{i}$的第$i$个最近邻对应动作$a$的激励，$w_{i}=\frac{k(h, h_{i})}{\sum_{j}k(h, h_{j})}$, $h_{i}$是$K_{a}$ 的第$i$个最近邻对应的状态，$k(x,y)$是向量$x$和向量$y$的核函数，如高斯核函数$k(h, h_{i})= \frac{1}{||h - h_{i}||_{2}^{2}} + \delta$。
 \ifx\allfiles\undefined
 \end{CJK*}
 \bibliographystyle{plain}
