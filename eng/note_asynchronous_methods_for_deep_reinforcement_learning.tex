@@ -31,11 +31,16 @@ L_{i}(\theta_{i}) = \mathbb{E}(r + \gamma\cdot max_{a^{'}}Q(s^{'}, a^{'}; \theta
 \end{equation}
 where $s^{'}$ is the state encounted after state $s$. \uline{One drawback of using one-step method is that obtaining \textcolor{red}{a reward $r$ only directly affects the value of the state action pair $s, a$ }that led to the reward. The values of other state action pairs are affected only indirectly througt the updated value $Q(s, a)$. This can make the learning process slow since many updates are required the propagate a reward to the relevant preceding states and actions.} One way of propagating rewards faster is by using $n$-step returns. In $n$-step Q-learning, $Q(s, a)$ is updated toward the $n$-step return defined as \uline{$r_{t} + \gamma r_{t+1} + \cdots + \gamma^{n-1}r_{t+n-1} + \text{max}_{a}\gamma^{n}Q(s_{t+n}, a)$}.
 
-\paragraph{}Policy-based model-free methods directly parameterize the policy $\pi(a|s;\theta)$ and update the parameters $\theta$ by performing, typically approximate, gradient ascent on $\mathbb{E}[R_{t}]$. For example, standard \textbf{REINFORCE} updates the policy parameters $\theta$ in the direction $\nabla_{\theta}\text{log}\pi(a_{t}|s_{t}; \theta)R_{t}$, which is an unbiased estimate of $\nabla_{\theta}\mathbb{E}[R_{t}]$. It is possible to reduce the variance of this estimate while keeping it unbiased by substracting a learned function of the state $b_{t}(s_{t})$, known as a baseline from the return. The resulting gradient is \uline{$\nabla_{\theta}long\pi(a_{t}|s_{t}; \theta)(R_{t} - b_{t}(s_{t}))$}.
+\paragraph{}Policy-based model-free methods directly parameterize the policy $\pi(a|s;\theta)$ and update the parameters $\theta$ by performing, typically approximate, gradient ascent on $\mathbb{E}[R_{t}]$. For example, standard \textbf{REINFORCE} updates the policy parameters $\theta$ in the direction $\nabla_{\theta}\text{log}\pi(a_{t}|s_{t}; \theta)R_{t}$, which is an unbiased estimate of $\nabla_{\theta}\mathbb{E}[R_{t}]$. It is possible to reduce the variance of this estimate while keeping it unbiased by subtracting a learned function of the state $b_{t}(s_{t})$, known as a baseline from the return. The resulting gradient is \uline{$\nabla_{\theta}log\pi(a_{t}|s_{t}; \theta)(R_{t} - b_{t}(s_{t}))$}.
 
-\section{Algorithm}
-\begin{algorithm}
-	\caption{Asychronous one-step Q-learning - pseudocode for each actor-learner thread.}
+\paragraph{}A learned estimate of the value function is commonly used as the baseline $b_{t}(s_{t}) \approx V^{\pi}(s_{t})$ leading to a much lower variance estimate of the policy gradient. When an approximate value function is used as the baseline, the quantity $R_{t} - b_{t}$ used to scale the policy gradient can be seen as an estimate of the \textit{advantage} of the action $a_{t}$ in state $s_t$, or $A(a_{t}, s_{t}) = Q(a_{t}, s_{t}) - V(s_{t})$
+
+
+\section{Asynchronous one-step Q-learning}
+
+\begin{algorithm} 
+	\caption{Asynchronous one-step Q-learning - pseudocode for each actor-learner thread.}
+	\label{asynchronous_one_step_q_learning}
 	\begin{algorithmic}[1]
 		\State \textit{// Assume global shared $\theta, \theta^{-}$, and counter $T = 0$.}
 		\State Initialize thread step counter $t \leftarrow 0$
@@ -44,7 +49,7 @@ where $s^{'}$ is the state encounted after state $s$. \uline{One drawback of usi
 		\State Get initial state $s$
 		\Repeat
 			\State Take action $a$ with $\epsilon$-greedy policy based on $Q(s, a; \theta)$
-			\State Recieve new state $s^{'}$ and reward $r$
+			\State Receive new state $s^{'}$ and reward $r$
 			\State $y = \left\lbrace
 				\begin{array}{lcl}
 					r & & \text{for terminal }s^{'} \\
@@ -62,6 +67,90 @@ where $s^{'}$ is the state encounted after state $s$. \uline{One drawback of usi
 				\State Clear gradients $d\theta \leftarrow 0$.
 			\EndIf
 		\Until{$T > T_{max}$}
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Asynchronous one-step Sarsa}
+\paragraph{}The asynchronous one-step Sarsa algorithm is the same as asynchronous one-step Q-learning as given in algorithm {\ref{asynchronous_one_step_q_learning}} except that is uses a different target value for $Q(s, a)$. The target value used by one-step Sarsa is $r + \gamma Q(s^{'}, a^{'}; \theta^{-})$ where $a^{'}$ is the action taken in state $s^{'}$.
+
+
+
+\section{Asynchronous n-step Q-learning}
+
+\begin{algorithm} 
+	\caption{Asynchronous one-step Q-learning - pseudocode for each actor-learner thread.}
+	\label{asynchronous_n_step_q_learning}
+	\begin{algorithmic}[1]
+		\State \textit{// Assume global shared parameter vector $\theta$}
+		\State \textit{// Assume global shared target parameter vector $\theta^{-}$}
+		\State \textit{// Assume global shared counter $T = 0$}
+		\State Initialize thread step count $t \leftarrow 1$
+		\State Initialize target network parameters $\theta \leftarrow \theta$
+		\State Initialize thread-specific parameters $\theta^{-} \leftarrow \theta$
+		\State Initialize network gradients $d\theta \leftarrow 0$
+		\Repeat 
+			\State Clear gradient $d\theta \leftarrow 0$
+			\State Synchronous thread-specific parameters $\theta^{'} = \theta$
+			\State $t_{target} = t$
+			\State Get state $s_{t}$
+			\Repeat
+				\State Take action $a_{t}$ accordin to the $\epsilon$-greedy policy based on $Q(s_{t}, a_{t};\theta^{'})$
+				\State Receive reward $r_{t}$ and new state $s_{t+1}$
+				\State $t \leftarrow t + 1$
+				\State $T \leftarrow T + 1$
+			\Until {terminal $s_{t}$ or $t - t_{target} == t_{max}$}
+			\State $R = \left\lbrace
+				\begin{array}{lcl}
+					0 & & \text{for terminal }s_{t} \\
+					max_{a}Q(s^{t}, a; \theta^{-}) & & \text{for non-terminal }s_{t}
+				\end{array}	\right.$	
+			\For {$i \in {t - 1, ..., t_{start}}$}
+				\State $R \leftarrow r_{i} + \gamma R$
+				\State Accumulate gradients wrt $\theta^{'} : d\theta + \frac{\partial(R - Q(s_{i},a_{i}; \theta^{'}))^{2}}{\partial{\theta^{'}}}$
+			\EndFor	
+			\State Performance asynchronous update of $\theta$ using $d\theta$.
+			\If $T mod I_{target} == 0$
+				\State $\theta^{-} \leftarrow \theta$
+			\EndIf
+		\Until {$T > T_{max}$}		
+		
+	\end{algorithmic}
+\end{algorithm}
+
+\section{Asynchronous advantage actor-critic}
+\begin{algorithm} 
+	\caption{Asynchronous advantage actor-critic - pseudocode for each actor-learner thread.}
+	\label{asynchronous_advantage_actor_critic}
+	\begin{algorithmic}[1]
+		\State \textit{// Assume global shared parameter vector $\theta$ and $\theta_{v}$ and global shared counter $T = 0$}
+		
+		\State \textit{// Assume thread-specific parameters $\theta^{'}$ and $\theta_{v}^{'}$}
+		\State Initialize thread step counter $t \leftarrow 1$
+		\Repeat 
+			\State Reset gradients: $d\theta \leftarrow 0$ and $d\theta_{v} \leftarrow 0$.
+			\State Synchronous thread-specific parameters $\theta^{'} = \theta$ and $\theta_{v}^{'} = \theta_{v}$
+			\State $t_{target} = t$
+			\State Get state $s_{t}$
+			\Repeat
+				\State Perform $a_t$ according to policy $\pi(a_{t}|s_{t};\theta^{'})$
+				\State Receive reward $r_{t}$ and new state $s_{t+1}$
+				\State $t \leftarrow t + 1$
+				\State $T \leftarrow T + 1$
+			\Until {terminal $s_{t}$ or $t - t_{target} == t_{max}$}
+			\State $R = \left\lbrace
+				\begin{array}{lcl}
+					0 & & \text{for terminal }s_{t} \\
+					V(s_{t}, \theta_{v}^{'}) & & \text{for non-terminal }s_{t} \text{//Bootstrap from last state}
+				\end{array}	\right.$	
+			\For {$i \in {t - 1, ..., t_{start}}$}
+				\State $R \leftarrow r_{i} + \gamma R$
+				\State Accumulate gradients wrt $\theta^{'}: d\theta + \Delta_{\theta^{'}}log\pi(a_{i}|s_{i};\theta^{'})(R - V(s_{i};\theta_{v}^{'}))$
+				\State Accumulate gradients wrt $\theta_{v}^{'}: d\theta_{v} + \frac{\partial{(R-V(s_{i}; \theta_{v}^{'}))^{2}}}{\partial\theta_{v}^{'}}$
+				
+			\EndFor	
+			\State Perform asynchronous update of $\theta$ using $d\theta$ and of $\theta_{v}$ using $d\theta_{v}$
+		\Until {$T > T_{max}$}		
+		
 	\end{algorithmic}
 \end{algorithm}
 

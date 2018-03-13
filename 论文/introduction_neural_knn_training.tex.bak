@@ -1,0 +1,19 @@
+\documentclass[a4paper]{article}
+\def\allfiles{}
+\usepackage{CJK}
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\renewcommand{\today}{\number\year 年 \number\month 月 \number\day 日}
+\title{\huge{基于k最近邻训练的深度Q学习}}
+\maketitle
+\input{introduction}
+\input{algorithm_neural_knn_training}
+\input{result_neural_knn_training}
+\section{问题描述}
+\section{算法}
+\section{实验结果}
+\end{CJK*}
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+

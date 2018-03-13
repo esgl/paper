@@ -1,3 +1,4 @@
+\ifx\allfiles\undefined
 \documentclass[12pt,a4paper]{article}
 \usepackage{amsfonts}
 \usepackage{amsmath}
@@ -8,7 +9,9 @@
 \geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
 
 \begin{document}
+\fi
 \include{MDP}
 \include{policy_gradient_preface}
-
+\ifx\allfiles\undefined
 \end{document}
+\fi

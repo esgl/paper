@@ -1,0 +1,11 @@
+\documentclass{book}
+\usepackage{ctex}
+
+\begin{document}
+\title{基于k-最近邻的深度Q学习}
+\author{胡冠男\\上海大学计算机工程与科学学院\\texttt{esgl@i.shu.edu.cn}}
+\date
+\maketitle
+中文English
+\[E = m c^2\]
+\end{document}

@@ -1,3 +1,4 @@
+\ifx\allfiles\undefined
 \documentclass[12pt,a4paper]{article}
 \def\allfiles{}
 \usepackage{amsfonts}
@@ -11,9 +12,11 @@
 \title{Markov Decision Processes (MDP)}
 \author{esgl Hu}
 \maketitle
+\fi
 \input{MDP_Background}
 \input{MDP_Notation_Definition}
-
+\ifx\allfiles\undefined
 \end{document}
+\fi
 
 

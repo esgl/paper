@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  27 FEB 2018 15:56
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  12 MAR 2018 10:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -277,29 +277,41 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 24.
 (c:/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) (./abstract.tex)
-(./introduction.tex) (./relate_works.tex) (./neural_knn_training.tex)
-(./experiments.tex) (./conclusion.tex)
-No file main.bbl.
+(./introduction.tex
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 29.
+ (c:/texlive/2017/texmf-dist/tex/latex/base/omscmr.fd
+File: omscmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 29.
+
 [1
 
-{c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./main.aux) )
-(\end occurred when \ifx on line 36 was incomplete) 
+{c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}])
+(./relate_works.tex) (./neural_knn_training.tex) (./experiments.tex)
+(./conclusion.tex) (./main.bbl
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no   in font cmr12!
+Missing character: There is no Ã in font cmr12!
+Missing character: There is no ¨ in font cmr12!
+) [2] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 3133 strings out of 492995
- 40687 string characters out of 6136403
- 103893 words of memory out of 5000000
- 6636 multiletter control sequences out of 15000+600000
- 8545 words of font info for 33 fonts, out of 8000000 for 9000
+ 3160 strings out of 492995
+ 41113 string characters out of 6136403
+ 106907 words of memory out of 5000000
+ 6657 multiletter control sequences out of 15000+600000
+ 9149 words of font info for 35 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,6n,24p,222b,188s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texlive/2017/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2017/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmr17.pfb>
-Output written on main.pdf (1 page, 36383 bytes).
+ 27i,6n,24p,594b,188s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/
+cmbx12.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texli
+ve/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2017/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pfb>
+Output written on main.pdf (2 pages, 66632 bytes).
 PDF statistics:
- 20 PDF objects out of 1000 (max. 8388607)
- 13 compressed objects within 1 object stream
+ 31 PDF objects out of 1000 (max. 8388607)
+ 21 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
