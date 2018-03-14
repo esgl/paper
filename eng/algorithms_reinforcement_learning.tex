@@ -1,0 +1,79 @@
+\documentclass[12pt,a4paper]{article}
+\def\allfiles{}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Algorithms in Reinforcement Learning}
+\author{Guannan Hu}
+\maketitle
+
+\begin{algorithm}
+\caption{Actor-Critic with Eligibility Traces (episodic), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
+\begin{algorithmic}
+	\State Input: a differentiable policy parameterization $\hat{v}(s, \mathbf{w})$
+	\State Input: a differentiable state-value function parameterization $\hat{v}(s, \mathbf{w})$
+	\State Algorithm parameters: trace-decay rate $\lambda^{\bm{\theta}} \in [0, 1], \lambda^{\mathbf{w}} \in [0,1]$; step sizes $\alpha^{\bm{\theta}}>0, \alpha^{\mathbf{w}} > 0$
+	\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}$)
+	\State	
+	\Loop \quad forever (for each episode):
+		\State initialize $S$ (first state of episode)
+		\State $\mathbf{z}^{\bm{\theta}} \leftarrow \mathbf{0}$ ($d^{'}$-component eligibility trace vector)
+		\State $\mathbf{z}^{\mathbf{w}} \leftarrow \mathbf{0}$ ($d^{'}$-component eligibility trace vector)
+		\State $\mathbf{I} \leftarrow \mathbf{1}$
+		\Loop \quad while $S$ is not terminal (for each time step):
+			\State $A \in \pi(\cdot|S, \bm{\theta})$
+			\State Take action $A$, observe $S^{'}, R$
+			\State $\delta \leftarrow \gamma\hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S, \mathbf{w})$  \qquad  (if $S^{'}$ is terminal, then $\hat{v}(S^{'}, \mathbf{w})$)
+			\State $\mathbf{z}^{\mathbf{w}} \leftarrow \gamma\lambda^{\mathbf{w}}\mathbf{z}^{\mathbf{w}} + I\nabla\hat{v}(s, \mathbf{w})$
+			\State $\mathbf{z}^{\bm{\theta}} \leftarrow \gamma\lambda^{\bm{\theta}}\mathbf{z}^{\bm{\theta}} + I\nabla\hat{v}(s, \bm{\theta})$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}\delta\mathbf{z}^{\mathbf{w}}}$
+			\State $\bm{\theta} \leftarrow \bm{\theta} + \alpha^{\mathbf{\theta}}\delta\mathbf{z}^{\bm{\theta}}$
+			\State $\mathbf{I} \leftarrow \gamma \mathbf{I}$
+			\State $S \leftarrow S^{'}$
+		\EndLoop
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+	\caption{Actor-Critic with Eligibility Traces (continuing), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
+	\begin{algorithmic}                                                                                                   
+		\State Input: a differentiable policy parameterization $\pi(a|s, \bm{\theta})$
+		\State Input: a differentiable state-value function parameterization $\hat{v}(s, \mathbf{w})$
+		\State Algorithm parameters: trace-decay rates $\lambda^{\bm{\theta}} \in [0, 1], \lambda^{\mathbf{w}} \in [0,1]$; step sizes $\alpha^{\bm{\theta}} > 0, \alpha^{\mathbf{w}} > 0, \eta > 0$
+		\State Initialize $\bar{R} \in \mathbb{R}$ (e.g., to 0)
+		\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}) \doteq 0$
+		\Loop \quad forever (for each time step):
+			\State $A \sim \pi(\cdot|S, \bm{\theta})$
+			\State Take Action $A$, observe $S^{'}, R$
+			\State $\delta \leftarrow R - \bar{R} + \hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S, \mathbf{w})$
+			\State $\bar{R} \leftarrow \bar{R} + \eta\delta$
+			\State $\mathbf{z}^{\mathbf{w}} \leftarrow \lambda^{\mathbf{w}}\mathbf{z}^{\mathbf{w}} + \nabla\hat{v}(S, \mathbf{w})$
+			\State $\mathbf{z}^{\bm{\theta}} \leftarrow \lambda^{\bm{\theta}}\mathbf{z}^{\bm{\theta}} + \nabla \text{ln}\pi(A|S, \bm{\theta})$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\delta\mathbf{z}^{\mathbf{w}}$
+			\State $\mathbf{w} \leftarrow \bm{\theta} + \alpha^{\bm{\theta}}\delta\mathbf{z}^{\bm{\theta}}$
+			\State $S \leftarrow S^{'}$
+		\EndLoop
+	\end{algorithmic}
+\end{algorithm} 
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

@@ -1,0 +1,36 @@
+\documentclass[12pt,a4paper]{article}
+\def\allfiles{}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Stein's Lemma}
+\maketitle
+
+\paragraph{} Suppose $X$ is a normally distributed random variable with expectation $\mu$ and variance $\sigma^{2}$. Further suppose $g$ is a function for which the two expectations $E(g(X)(X-\mu))$ and $E(g^{'}(X))$ both exist (the existence of the expectation of any random variable is equivalent to the finiteness of the expectation of its absolute value). Then
+\begin{equation}
+E(g(X)(X-\mu)) = \sigma^{2}E(g^{'}(X))
+\end{equation}
+In general, suppose $X$ and $Y$ are jointly normal distributed, Then
+\begin{equation}
+Cov(g(X),Y) = Cov(X,Y)E(g^{'}(X))
+\end{equation}
+
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

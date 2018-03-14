@@ -59,10 +59,10 @@ where $s^{'}$ is the state encounted after state $s$. \uline{One drawback of usi
 			\State Accumulate gradients wrt : $d\theta \leftarrow d\theta + \frac{\partial(y - Q(s, a; \theta))^{2}}{\partial\theta}$
 			\State $s = s^{'}$
 			\State $T \leftarrow T + 1$ and $t \leftarrow t + 1$
-			\If {$T$ mod $I_{target} == 0$}
+			\If {$T \bmod I_{target} == 0$}
 				\State Update the target network $\theta^{-} \leftarrow \theta$
 			\EndIf
-			\If{ $t$ mod $I_{asyncUpdate} == 0$ or $s$ is terminal}
+			\If {$t \bmod I_{asyncUpdate} == 0$ or $s$ is terminal}
 				\State Perform asynchronous update of $\theta$ using $d\theta$.
 				\State Clear gradients $d\theta \leftarrow 0$.
 			\EndIf
@@ -109,7 +109,7 @@ where $s^{'}$ is the state encounted after state $s$. \uline{One drawback of usi
 				\State Accumulate gradients wrt $\theta^{'} : d\theta + \frac{\partial(R - Q(s_{i},a_{i}; \theta^{'}))^{2}}{\partial{\theta^{'}}}$
 			\EndFor	
 			\State Performance asynchronous update of $\theta$ using $d\theta$.
-			\If $T mod I_{target} == 0$
+			\If {$T \bmod I_{target} == 0$}
 				\State $\theta^{-} \leftarrow \theta$
 			\EndIf
 		\Until {$T > T_{max}$}		

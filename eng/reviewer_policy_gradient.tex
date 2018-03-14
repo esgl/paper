@@ -1,0 +1,43 @@
+\documentclass[12pt,a4paper]{article}
+\def\allfiles{}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Reviewer of Policy Gradient}
+\author{Guannan Hu}
+\maketitle
+\paragraph{} Reinforcement learning aims to learn a policy for an agent to maximize a sum of reward signals. The agent starts at an initial state $s_{0} \sim P(s_{0})$. Then, the agent repeatedly samples an action $a_{t}$ from a policy $\pi_{\theta}(a_{t}|s_{t})$ with parameters $\theta$, receives a reward $r_{t} \sim P(r_{t}|s_{t}, a_{t})$, and transitions to a subsequent state $s_{t+1}$ according to the Markovian dynamics $P(s_{t+1}|a_{t}, s_{t})$ of the environment. This generates a trajectory of states, actions and rewards $(s_0, a_0, r_0, s_1, a_1, ...)$. We abbreviate the trajectory after the initial state and action by $\tau$.
+\paragraph{} The goal is maximize the discounted sum of rewards along sampled trajectories.
+\begin{equation*}
+J(\theta) = \mathbb{E}_{s_0, a_0, \tau} \left[ \sum_{t=0}^{\infty}\gamma^{t}r_{t} \right] = \mathbb{E}_{s \sim \rho^{\pi}(s), a, \tau}\left[\sum_{t=0}^{\infty}\gamma^{t}r_{t}\right],
+\end{equation*}
+where $\gamma \in [0, 1)$ is a discount parameter and $\rho^{\pi}(s) = \sum_{t=0}^{\infty}\gamma^{t}P^{\pi}(s_{t}=s)$ is the unnormalized discounted state visitation frequency.
+
+\paragraph{} Policy gradient methods differentiate the expected return objective with respect to the policy parameters and apply gradient-based optimization. The policy gradient can be written as an expectation amenable to Monte Carlo estimation
+
+\begin{equation}
+\begin{aligned}
+\nabla_{\theta}J(\theta) & = & \mathbb{E}_{s \sim \rho^{\pi}(s),a,\tau}\left[Q^{\pi}(s,a)\nabla \text{log} \pi(a|s)\right]\\
+                         & = & \mathbb{E}_{s \sim \rho^{\pi}(s), a, \tau}\left[A^{\pi}(s,a)\nabla \text{log} \pi(a|s)\right]
+\end{aligned}
+\end{equation}
+where $Q_{\pi}(s,a)=\mathbb{E}\left[\sum_{t=0}^{\infty}\gamma^{t}r_{t}|s_{0}=s, a_{0}=a\right]$ is the state-action value function. $V_{\pi}(s) = \mathbb{E}_{a}[Q_{\pi}(s,a)]$ is the value function, and $A_{\pi} = Q^{\pi}(s,a) - V_{\pi}(s)$ is the advantage function. the equality in the last line follows from the fact that $\mathbb{E}_{a}[\nabla \text{log} \pi(a|s)] = 0$
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

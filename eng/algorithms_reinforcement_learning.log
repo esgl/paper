@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  14 MAR 2018 12:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  14 MAR 2018 17:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**./note_asynchronous_methods_for_deep_reinforcement_learning.tex
-(./note_asynchronous_methods_for_deep_reinforcement_learning.tex
+**./algorithms_reinforcement_learning.tex
+(./algorithms_reinforcement_learning.tex
 LaTeX2e <2017-04-15>
 Babel <3.10> and hyphenation patterns for 84 language(s) loaded.
 (c:/texlive/2017/texmf-dist/tex/latex/base/article.cls
@@ -204,21 +204,29 @@ Document Style algorithmicx 1.2 - a greatly improved `algorithmic' style
 Package: algpseudocode 
 
 Document Style - pseudocode environments for use with the `algorithmicx' style
-) (./note_asynchronous_methods_for_deep_reinforcement_learning.aux)
-\openout1 = `note_asynchronous_methods_for_deep_reinforcement_learning.aux'.
+) (c:/texlive/2017/texmf-dist/tex/latex/tools/bm.sty
+Package: bm 2017/01/16 v1.2c Bold Symbol Support (DPC/FMi)
+\symboldoperators=\mathgroup6
+\symboldletters=\mathgroup7
+\symboldsymbols=\mathgroup8
+LaTeX Font Info:    Redeclaring math alphabet \mathbf on input line 141.
+LaTeX Info: Redefining \bm on input line 207.
+)
+(./algorithms_reinforcement_learning.aux)
+\openout1 = `algorithms_reinforcement_learning.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 20.
-LaTeX Font Info:    ... okay on input line 20.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 22.
+LaTeX Font Info:    ... okay on input line 22.
 
 *geometry* driver: auto-detecting
 *geometry* detected driver: pdftex
@@ -268,47 +276,46 @@ LaTeX Font Info:    ... okay on input line 20.
 \makeMPintoPDFobject=\count118
 \everyMPtoPDFconversion=\toks27
 )
-LaTeX Font Info:    Try loading font information for U+msa on input line 23.
+LaTeX Font Info:    Try loading font information for U+msa on input line 25.
  (c:/texlive/2017/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 23.
+LaTeX Font Info:    Try loading font information for U+msb on input line 25.
 
 (c:/texlive/2017/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
-) [1
+)
+No file algorithms_reinforcement_learning.bbl.
+[1
 
-{c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}]
-(./note_asynchronous_methods_for_deep_reinforcement_learning.bbl) [2] [3]
-[4] (./note_asynchronous_methods_for_deep_reinforcement_learning.aux) ) 
+{c:/texlive/2017/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2]
+(./algorithms_reinforcement_learning.aux) ) 
 Here is how much of TeX's memory you used:
- 3179 strings out of 492995
- 41889 string characters out of 6136403
- 121928 words of memory out of 5000000
- 6689 multiletter control sequences out of 15000+600000
- 13239 words of font info for 51 fonts, out of 8000000 for 9000
+ 3251 strings out of 492995
+ 42215 string characters out of 6136403
+ 114242 words of memory out of 5000000
+ 6749 multiletter control sequences out of 15000+600000
+ 17509 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 27i,12n,24p,820b,338s stack positions out of 5000i,500n,10000p,200000b,80000s
-<c:/texl
-ive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2017/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><c:/texlive/2017/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmmi12.pfb><c:/texlive/2017/texmf-dist/fonts/t
-ype1/public/amsfonts/cm/cmmi6.pfb><c:/texlive/2017/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmmi8.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr10.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.
-pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/te
-xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb><c:/texlive/2017/
-texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2017/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2017/texmf-dist/fonts/typ
-e1/public/amsfonts/cm/cmsy6.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/
-amsfonts/cm/cmsy8.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmti12.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
+ 27i,6n,24p,259b,324s stack positions out of 5000i,500n,10000p,200000b,80000s
+<c:/texlive/2017/texmf-dist/fonts/ty
+pe1/public/amsfonts/cm/cmbx12.pfb><c:/texlive/2017/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmbx6.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts
+/cm/cmbx8.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12
+.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb><c:/t
+exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb><c:/texlive/2
+017/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmmib8.pfb><c:/texlive/2017/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb><c:/texlive/2017/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmr17.pfb><c:/texlive/2017/texmf-dist/fonts/typ
+e1/public/amsfonts/cm/cmsy10.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public
+/amsfonts/cm/cmsy6.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy8.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/symbols/ms
 bm10.pfb>
-Output written on note_asynchronous_methods_for_deep_reinforcement_learning.pdf
- (4 pages, 162641 bytes).
+Output written on algorithms_reinforcement_learning.pdf (2 pages, 114332 bytes)
+.
 PDF statistics:
- 77 PDF objects out of 1000 (max. 8388607)
- 55 compressed objects within 1 object stream
+ 63 PDF objects out of 1000 (max. 8388607)
+ 45 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
