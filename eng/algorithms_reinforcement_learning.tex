@@ -25,6 +25,208 @@
 \maketitle
 
 \begin{algorithm}
+\caption{Semi-gradient TD($\lambda$) for estimating $\hat{v} \approx v_{\pi}$}
+\begin{algorithmic}
+	\State Input: the policy $\pi$ to be evaluated
+	\State Input: a differentiable function $\hat{v}: \mathcal{S}^{+} \times \mathbb{R}^{d} \rightarrow \mathbb{R}$ such that $\hat{v}(terminal, \cdot) = 0$
+	\State Algorithm parameters: step size $\alpha > 0$, trace decay rate $\gamma \in [0, 1]$
+	\State Initialize value-function weights $\mathbf{w}$ arbitrarily (e.g., $\mathbf{w} = \mathbf{0}$)
+	\State
+	\Loop\ for each episode:
+		\State Initialize $S$
+		\State $\mathbf{z} \leftarrow \mathbf{0}$
+		\Repeat\ for each step of episode:
+			\State Choose $A \sim \pi(\cdot|S)$
+			\State Take action $A$, observe $R, S^{'}$
+			\State $\mathbf{z} \leftarrow \gamma\lambda\mathbf{z} + \nabla\hat{v}(S,\mathbf{w})$
+			\State $\delta \leftarrow R + \gamma\hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S, \mathbf{w})$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha\delta\mathbf{z}$
+			\State $S \leftarrow S^{'}$
+		\Until $S^{'}$ is terminal
+		
+	\EndLoop
+	
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{True Online $TD(\lambda)$ for estimating $\mathbf{w}^{T}\mathbf{x} \approx v_{\pi}$}
+\begin{algorithmic}
+	\State Input: the policy $\pi$ to be evaluated
+ 	\State Input: a feature function $\mathbf{x}:\mathcal{S}^{+} \leftarrow \mathbb{R}^{d}$ such that $\mathbf{x}(terminal, \cdot) = \mathbf{0}$
+	\State Algorithm parameters: step size $\alpha > 0$, trace decay rate $\gamma \in [0, 1]$
+	\State Initialize value-function weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., $\mathbf{w} = \mathbf{0}$)
+	\State
+	\Loop\ for each episode:
+		\State Initialize state and obtain initial feature vector $\mathbf{x}$
+		\State $\mathbf{z} \leftarrow \mathbf{0}$
+		\State $V_{old} \leftarrow 0$
+		\Repeat\ for each step of episode:
+			\State Choose $A \sim \pi$
+			\State Take action $A$, observe $R, \mathbf{x}^{'}$ (feature vector of the next state)
+			\State $V \leftarrow \mathbf{w}^{T}\mathbf{x}$
+			\State $V^{'} \leftarrow \mathbf{w}^{T}\mathbf{x}$
+			\State $\delta \leftarrow R + \gamma V^{'} - V$
+			\State $\mathbf{z} \leftarrow \gamma\lambda\mathbf{z} + (1 - \alpha\gamma\lambda\mathbf{z}^{T}\mathbf{x})\mathbf{x}$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha(\delta + V - V_{old})\mathbf{z} - \alpha(V - V_{old})\mathbf{x}$
+			\State $V_{old} \leftarrow V^{'}$
+			\State $\mathbf{x} \leftarrow \mathbf{x}^{'}$	
+		\Until {$\mathbf{x}^{'} = \mathbf{0}$ (signaling arrival at the terminal state)}		
+			
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{Sarsa($\lambda$) with binary features and linear function approximation for estimating $\mathbf{w}^{T}\mathbf{x} \approx q_{\pi}$ or $q_{*}$}
+\begin{algorithmic}
+	\State Input: a function $\mathcal{F}(s, a)$ returning the set of (indices of) active features for $s,a$
+	\State Input: a policy $\pi$ (if estimating $q_{\pi}$)
+	\State Algorithm parameters: step size $\alpha > 0$, trace decay rate $\lambda \in [0, 1]$
+	\State Initialize: $\mathbf{w}=(w_1, ..., w_d)^{T} \in \mathbb{R}^{d}$ (e.g., $\mathbf{w} = \mathbf{0}$), $\mathbf{z}=(z_1, ..., z_d)^{T} \in \mathbb{R}^{d}$
+	\State
+	\Loop\ for each episode:
+		\State Initialize $S$
+		\State Choose $A \sim \pi(\cdot|S)$ or $\epsilon$-greedy according to $\hat{q}(S, \cdot, \mathbf{w})$
+		\State $\mathbf{z} \leftarrow \mathbf{0}$
+		\Loop\ for each step of episode:
+			\State Take action $A$, observe $R, S^{'}$
+			\State $\delta \leftarrow R$
+			\Loop\ for $i$ in $\mathcal{F}(S, A)$
+				\State $\delta \leftarrow \delta - w_{i}$
+				\State Set $$z \leftarrow \left\{
+				\begin{array}{ll}
+				z_{i}+1 & \text{(accumulating traces)}\\
+				1 &  \text{(replaceing traces)}				
+				\end{array}\right.
+				$$
+			\EndLoop
+			\If {$S^{'}$ is terminal then}
+				\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha \delta \mathbf{z}$
+				\State Go to next episode
+			\EndIf
+			\State Choose $A^{'} \sim \pi(\cdot|S^{'})$ or near greedily $\sim \hat{q}(S^{'}, \cdot, \mathbf{w})$
+			\Loop\ for $i$ in $\mathcal{F}(S^{'}, A^{'})$:
+				\State $\delta \leftarrow \delta + \gamma w_{i}$
+			\EndLoop
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha\delta\mathbf{z}$
+			\State $\mathbf{z} \leftarrow \gamma\lambda\mathbf{z}$
+			\State $S \leftarrow S^{'}; A \leftarrow A^{'}$
+			
+		\EndLoop
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{True Online Sarsa($\lambda$) for estimating $\mathbf{w}^{T}\mathbf{x} \approx q_{\pi}$ or $q_{*}$}
+\begin{algorithmic}
+	\State Input: a feature function $\mathbf{x}: \mathcal{S}^{+} \times \mathcal{A} \leftarrow \mathbb{R}^{d} $ such that $\mathbf{x}(terminal, \cdot)=\mathbf{0}$
+	\State Input: a policy $\pi$ (if estimating $q_{\pi}$)
+	\State Algorithm parameters: step size $\alpha > 0$, trace decay rate $\lambda \in [0, 1]$
+	\State Initialize: $\mathbf{w} \in \mathbb{R}^d$ (e.g., $\mathbf{w} = \mathbf{0}$)
+	\State
+	\Loop\ for each episode:
+		\State Initialize $S$
+		\State Choose $A \sim \pi(\cdot|S)$ or near greedily from $S$ using $\mathbf{w}$
+		\State $\mathbf{w} \leftarrow \mathbf{x}(S,A)$
+		\State $\mathbf{z} \leftarrow \mathbf{0}$
+		\State $Q_{old} \leftarrow 0$
+		\Repeat\ {for each step of episode}:
+			\State Take action $A$, observe $R, S^{'}$
+			\State Choose $A^{'} \sim \pi(\cdot|S^{'})$ or near greedily from $S^{'}$ using $\mathbf{w}$
+			\State $\mathbf{x}^{'} \leftarrow \mathbf{x}(S^{'}, A^{'}) $
+			\State $Q \leftarrow \mathbf{w}^{T}\mathbf{x}$
+			\State $Q^{'} \leftarrow \mathbf{w}^{T}\mathbf{x}^{'}$
+			\State $\delta \leftarrow R + \gamma Q^{'} - Q$
+			\State $\mathbf{z} \leftarrow \gamma\lambda\mathbf{z} + (1 - \alpha\gamma\lambda\mathbf{z}^{T}\mathbf{x})\mathbf{x}$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha(\delta + Q - Q_{old})\mathbf{z} - \alpha(Q - Q_{old})\mathbf{x}$
+			\State $Q_old \leftarrow Q^{'}$
+			\State $\mathbf{x} \leftarrow \mathbf{x}^{'}$
+			\State $A \leftarrow A^{'}$
+		\Until {$S^{'}$ is terminal}
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{REINFORCE: Monte-Carlo Policy-Gradient Method (episodic) estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
+\begin{algorithmic}
+	\State Input: a differential policy parameterization $\pi(a|s,\bm{\theta})$
+	\State Algorithm parameter: step size $\alpha > 0$
+	\State Initializa policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ (e.g., to $\mathbf{0}$)
+	\State
+	\Loop\ forever (for each episode):
+		\State Generate an episode $S_0, A_0, R_1, ..., S_{T-1}, A_{T-1}, R_T$, following $\pi(\cdot|\cdot,\bm{\theta})$
+		\Loop\ for each step of the episode $t=0,1,...,T-1$:
+			\State $G \leftarrow \sum_{k=t+1}^{T}R_{k}$
+			\State $\bm{\theta} \leftarrow \bm{\theta} + \alpha\gamma^{t}G\nabla\text{ln}\pi(A_t|S_t,\bm{\theta})$		
+		\EndLoop
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{REINFORCE with Baseline (episodic), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
+\begin{algorithmic}
+	\State Input: a differentiable policy parameterization $\pi(a|s, \bm{\theta})$
+	\State Input: a differentiable state-value function parameterization $\hat{v}(s, \mathbf{w})$
+	\State Algorithm parameters: step sizes $\alpha^{\bm{\theta}} > 0, \alpha^{\mathbf{w}} > 0$
+	\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}$)
+	\State
+	\Loop\ forever (for each episode):
+		\State Generate an episode $S_0, A_0, R_1,..., S_{T-1}, A_{T-1}, R_{T}$, following $\pi(\cdot|\cdot, \bm{\theta})$
+		\Loop\ for each step of episode $t=0,1,...,T-1$:
+			\State $G \leftarrow \sum_{k=t+1}^{T}R_{k}$  \qquad $(G_t)$
+			\State $\delta \leftarrow G - \hat{v}(S_{t}, \mathbf{w})$
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}\gamma^{t}\nabla\hat{v}(S_{t}, \mathbf{w})$
+			\State $\bm{\theta} \leftarrow \bm{\theta} + \alpha^{\bm{\theta}}\gamma^{t}\delta\nabla\text{ln}\pi(A_t|S_{t},\bm{\theta})$
+		\EndLoop
+	
+	\EndLoop
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{One-step Actor Critic (episodic), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
+\begin{algorithmic}
+	\State Input: a differentiable policy parameter $\pi(a|s, \bm{\theta})$
+	\State Input: a differentiable state-value function parameterization $\hat{v}(s, \mathbf{w})$
+	\State Algorithm parameter: step size $\alpha^{\bm{\theta}} > 0, \alpha^{\mathbf{w}} > 0$
+	\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}$)
+	\State
+	\Loop\ forever (for each episode):
+		\State Initialize $S$ (first state of episode)
+		\State $I \leftarrow 1$
+		\Loop\ while $S$ is not terminal (for each time step):
+			\State $A \sim \pi(\cdot|S, \bm{\theta})$
+			\State Take action $A$, observe $S^{'}, R$
+			\State $\delta \leftarrow R + \gamma\hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S,\mathbf{w})$    \qquad (if $S^{'}$ is terminal, then $\hat{v}(S^{'}, \mathbf{w}) \doteq 0$)
+			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}}I\delta\nabla\hat{v}(S,\mathbf{w})$
+			\State $\bm{\theta} \leftarrow \bm{\theta} + \alpha^{\bm{\theta}}I\delta\nabla\text{ln}\pi(A|S,\bm{\theta})$
+			\State $I \leftarrow \gamma I$
+			\State $S \leftarrow S^{'}$
+		\EndLoop
+	\EndLoop
+	
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
 \caption{Actor-Critic with Eligibility Traces (episodic), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
 \begin{algorithmic}
 	\State Input: a differentiable policy parameterization $\hat{v}(s, \mathbf{w})$
@@ -32,12 +234,12 @@
 	\State Algorithm parameters: trace-decay rate $\lambda^{\bm{\theta}} \in [0, 1], \lambda^{\mathbf{w}} \in [0,1]$; step sizes $\alpha^{\bm{\theta}}>0, \alpha^{\mathbf{w}} > 0$
 	\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}$)
 	\State	
-	\Loop \quad forever (for each episode):
+	\Loop\ forever (for each episode):
 		\State initialize $S$ (first state of episode)
 		\State $\mathbf{z}^{\bm{\theta}} \leftarrow \mathbf{0}$ ($d^{'}$-component eligibility trace vector)
 		\State $\mathbf{z}^{\mathbf{w}} \leftarrow \mathbf{0}$ ($d^{'}$-component eligibility trace vector)
-		\State $\mathbf{I} \leftarrow \mathbf{1}$
-		\Loop \quad while $S$ is not terminal (for each time step):
+		\State $I \leftarrow 1$
+		\Loop\ while $S$ is not terminal (for each time step):
 			\State $A \in \pi(\cdot|S, \bm{\theta})$
 			\State Take action $A$, observe $S^{'}, R$
 			\State $\delta \leftarrow \gamma\hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S, \mathbf{w})$  \qquad  (if $S^{'}$ is terminal, then $\hat{v}(S^{'}, \mathbf{w})$)
@@ -45,13 +247,14 @@
 			\State $\mathbf{z}^{\bm{\theta}} \leftarrow \gamma\lambda^{\bm{\theta}}\mathbf{z}^{\bm{\theta}} + I\nabla\hat{v}(s, \bm{\theta})$
 			\State $\mathbf{w} \leftarrow \mathbf{w} + \alpha^{\mathbf{w}\delta\mathbf{z}^{\mathbf{w}}}$
 			\State $\bm{\theta} \leftarrow \bm{\theta} + \alpha^{\mathbf{\theta}}\delta\mathbf{z}^{\bm{\theta}}$
-			\State $\mathbf{I} \leftarrow \gamma \mathbf{I}$
+			\State $I \leftarrow \gamma I$
 			\State $S \leftarrow S^{'}$
 		\EndLoop
 	\EndLoop
 \end{algorithmic}
 \end{algorithm}
 
+\newpage
 
 \begin{algorithm}
 	\caption{Actor-Critic with Eligibility Traces (continuing), for estimating $\pi_{\bm{\theta}} \approx \pi_{*}$}
@@ -61,7 +264,8 @@
 		\State Algorithm parameters: trace-decay rates $\lambda^{\bm{\theta}} \in [0, 1], \lambda^{\mathbf{w}} \in [0,1]$; step sizes $\alpha^{\bm{\theta}} > 0, \alpha^{\mathbf{w}} > 0, \eta > 0$
 		\State Initialize $\bar{R} \in \mathbb{R}$ (e.g., to 0)
 		\State Initialize policy parameter $\bm{\theta} \in \mathbb{R}^{d^{'}}$ and state-value weights $\mathbf{w} \in \mathbb{R}^{d}$ (e.g., to $\mathbf{0}) \doteq 0$
-		\Loop \quad forever (for each time step):
+		\State
+		\Loop\ forever (for each time step):
 			\State $A \sim \pi(\cdot|S, \bm{\theta})$
 			\State Take Action $A$, observe $S^{'}, R$
 			\State $\delta \leftarrow R - \bar{R} + \hat{v}(S^{'}, \mathbf{w}) - \hat{v}(S, \mathbf{w})$
@@ -77,3 +281,4 @@
 \bibliographystyle{plain}
 \bibliography{reference}
 \end{document}
+\newpage
