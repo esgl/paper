@@ -6,11 +6,12 @@ Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
 \newblock Playing atari with deep reinforcement learning.
 \newblock {\em Computer Science}, 2013.
 
-\bibitem{Pritzel2017Neural}
-Alexander Pritzel, Benigno Uria, Sriram Srinivasan, Adrià Puigdomènech, Oriol
-  Vinyals, Demis Hassabis, Daan Wierstra, and Charles Blundell.
-\newblock Neural episodic control.
-\newblock 2017.
+\bibitem{silver2017mastering}
+David Silver, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja
+  Huang, Arthur Guez, Thomas Hubert, Lucas Baker, Matthew Lai, Adrian Bolton,
+  et~al.
+\newblock Mastering the game of go without human knowledge.
+\newblock {\em Nature}, 550(7676):354, 2017.
 
 \bibitem{silver2016mastering}
 David Silver, Aja Huang, Chris~J Maddison, Arthur Guez, Laurent Sifre, George
@@ -19,11 +20,38 @@ David Silver, Aja Huang, Chris~J Maddison, Arthur Guez, Laurent Sifre, George
 \newblock Mastering the game of go with deep neural networks and tree search.
 \newblock {\em nature}, 529(7587):484--489, 2016.
 
-\bibitem{silver2017mastering}
-David Silver, Julian Schrittwieser, Karen Simonyan, Ioannis Antonoglou, Aja
-  Huang, Arthur Guez, Thomas Hubert, Lucas Baker, Matthew Lai, Adrian Bolton,
-  et~al.
-\newblock Mastering the game of go without human knowledge.
-\newblock {\em Nature}, 550(7676):354, 2017.
+\bibitem{van2016deep}
+Hado Van~Hasselt, Arthur Guez, and David Silver.
+\newblock Deep reinforcement learning with double q-learning.
+\newblock In {\em AAAI}, volume~16, pages 2094--2100, 2016.
+
+\bibitem{wang2015dueling}
+Ziyu Wang, Tom Schaul, Matteo Hessel, Hado Van~Hasselt, Marc Lanctot, and Nando
+  De~Freitas.
+\newblock Dueling network architectures for deep reinforcement learning.
+\newblock {\em arXiv preprint arXiv:1511.06581}, 2015.
+
+\bibitem{wang2016sample}
+Ziyu Wang, Victor Bapst, Nicolas Heess, Volodymyr Mnih, Remi Munos, Koray
+  Kavukcuoglu, and Nando de~Freitas.
+\newblock Sample efficient actor-critic with experience replay.
+\newblock {\em arXiv preprint arXiv:1611.01224}, 2016.
+
+\bibitem{schaul2015prioritized}
+Tom Schaul, John Quan, Ioannis Antonoglou, and David Silver.
+\newblock Prioritized experience replay.
+\newblock {\em arXiv preprint arXiv:1511.05952}, 2015.
+
+\bibitem{horgan2018distributed}
+Dan Horgan, John Quan, David Budden, Gabriel Barth-Maron, Matteo Hessel, Hado
+  van Hasselt, and David Silver.
+\newblock Distributed prioritized experience replay.
+\newblock {\em arXiv preprint arXiv:1803.00933}, 2018.
+
+\bibitem{Pritzel2017Neural}
+Alexander Pritzel, Benigno Uria, Sriram Srinivasan, Adrià Puigdomènech, Oriol
+  Vinyals, Demis Hassabis, Daan Wierstra, and Charles Blundell.
+\newblock Neural episodic control.
+\newblock 2017.
 
 \end{thebibliography}

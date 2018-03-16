@@ -1,0 +1,4 @@
+\paragraph{Double Deep Q-learning Network} The idea of Double Q-learning\cite{van2016deep} is to reduce overestimations by decomposing the max operation in the target into action selection and action evaluation. Although not fully decoupled, the target network in the DQN architecture provides a natural candidate for the second value function, without having to introduce additional networks. In DDQN, It proposed to evaluate the greedy policy according to the online network, but using the target network to estimate its value. DDQN update is the same as for DQN, but replacing the target $Y_{t}^{DQN}$ with
+\begin{equation}
+Y_{t}^{DoubleDQN} \equiv R_{t+1} + \gamma Q(S_{t+1}, argmax_{a}Q(S_{t+1},a;\bm{\theta}_{t}), \bm{\theta}_{t}^{-})
+\end{equation}
