@@ -1,4 +1,4 @@
-\begin{thebibliography}{1}
+\begin{thebibliography}{10}
 
 \bibitem{Mnih2013Playing}
 Volodymyr Mnih, Koray Kavukcuoglu, David Silver, Alex Graves, Ioannis
@@ -48,10 +48,27 @@ Dan Horgan, John Quan, David Budden, Gabriel Barth-Maron, Matteo Hessel, Hado
 \newblock Distributed prioritized experience replay.
 \newblock {\em arXiv preprint arXiv:1803.00933}, 2018.
 
-\bibitem{Pritzel2017Neural}
-Alexander Pritzel, Benigno Uria, Sriram Srinivasan, Adrià Puigdomènech, Oriol
+\bibitem{Schulman2015Trust}
+John Schulman, Sergey Levine, Philipp Moritz, Michael~I Jordan, and Pieter
+  Abbeel.
+\newblock Trust region policy optimization.
+\newblock {\em Computer Science}, pages 1889--1897, 2015.
+
+\bibitem{Wu2017Scalable}
+Yuhuai Wu, Elman Mansimov, Shun Liao, Roger Grosse, and Jimmy Ba.
+\newblock Scalable trust-region method for deep reinforcement learning using
+  kronecker-factored approximation.
+\newblock 2017.
+
+\bibitem{Schulman2017Proximal}
+John Schulman, Filip Wolski, Prafulla Dhariwal, Alec Radford, and Oleg Klimov.
+\newblock Proximal policy optimization algorithms.
+\newblock 2017.
+
+\bibitem{pritzel2017neural}
+Alexander Pritzel, Benigno Uria, Sriram Srinivasan, Adria Puigdomenech, Oriol
   Vinyals, Demis Hassabis, Daan Wierstra, and Charles Blundell.
 \newblock Neural episodic control.
-\newblock 2017.
+\newblock {\em arXiv preprint arXiv:1703.01988}, 2017.
 
 \end{thebibliography}

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  16 MAR 2018 13:36
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017/W32TeX) (preloaded format=pdflatex 2018.2.6)  19 MAR 2018 08:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -369,23 +369,21 @@ Package pdftex.def Info: pic/dueling-architecture.PNG used on input line 4.
 (pdftex.def)             Requested size: 142.26378pt x 115.26205pt.
 ) (./introduction/introduction-replay.tex)
 (./introduction/introduction-important-sampling.tex [2 <./pic/dueling-architect
-ure.PNG>]) (./introduction.bbl [3]
-Underfull \hbox (badness 1460) in paragraph at lines 35--39
+ure.PNG>]) (./introduction/introduction-trpo.tex)
+(./introduction/introduction-ppo.tex) (./introduction/introduction-nec.tex)
+(./introduction.bbl [3]
+Underfull \hbox (badness 1033) in paragraph at lines 35--39
 []\OT1/cmr/m/n/12 Ziyu Wang, Vic-tor Bapst, Nico-las Heess, Volodymyr Mnih, Rem
 i Munos, Ko-ray
  []
 
-Missing character: There is no Ã in font cmr12!
-Missing character: There is no   in font cmr12!
-Missing character: There is no Ã in font cmr12!
-Missing character: There is no ¨ in font cmr12!
 ) [4] (./introduction.aux) )
 (\end occurred when \ifx on line 47 was incomplete) 
 Here is how much of TeX's memory you used:
- 3791 strings out of 492995
- 51306 string characters out of 6136403
- 124642 words of memory out of 5000000
- 7224 multiletter control sequences out of 15000+600000
+ 3803 strings out of 492995
+ 51618 string characters out of 6136403
+ 124654 words of memory out of 5000000
+ 7227 multiletter control sequences out of 15000+600000
  18462 words of font info for 68 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  39i,7n,25p,1010b,235s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -403,7 +401,7 @@ fonts/type1/public/amsfonts/cm/cmr8.pfb><c:/texlive/2017/texmf-dist/fonts/type1
 msfonts/cm/cmsy6.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm
 /cmsy8.pfb><c:/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmti12.pf
 b>
-Output written on introduction.pdf (4 pages, 172188 bytes).
+Output written on introduction.pdf (4 pages, 173225 bytes).
 PDF statistics:
  76 PDF objects out of 1000 (max. 8388607)
  53 compressed objects within 1 object stream

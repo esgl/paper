@@ -1,0 +1,32 @@
+\documentclass[12pt,a4paper]{article}
+\def\allfiles{}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Radial basis function}
+\author{Guannan Hu}
+\maketitle
+
+\paragraph{}A \textbf{radial basis function(RBF)} is a real-value function whose value depends only on the distance from the origin, so that $\phi(\bm{x}) = \phi(||\bm{x}||)$; or alternatively on the distance from some other point $c$, called a \textit{center}, so that $\phi(\bm{x}, \bm{c}) = \phi(||\bm{x} - \bm{c}||)$. Any function $\phi$ that satisfies the property $\phi(\bm{x})=\phi(||\bm{x}||)$ is a radial function. The norm is usually Euclidean distance, although other distance functions are also possible.
+\paragraph{} Sum of radial basis functions are typically used to approximate given functions. This approximation process can also be interpreted as a simple kind of neural network; this was the context in which they originally surfaced, in work by David Broomhead and David Lowe in 1988, which stemmed from Michael J.D.Powell's seminal research from 1977. RBFs are akso used as a kernel in support vector classification.
+
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}

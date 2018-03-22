@@ -339,6 +339,22 @@
 \end{algorithmic}
 \end{algorithm}
 
+\newpage
+
+\begin{algorithm}
+\caption{Policy iteration algorithm guaranteeing non-decreasing expected return $\eta$}
+\begin{algorithmic}
+	\State Initialize $\pi_{0}$
+	\For {$i = 0, 1, 2, ...$ until convergence}
+		\State Compute all advantage values $A_{\pi_i}(s,a)$.
+		\State Solve the constrained optimization problem
+		
+		\State \ $\pi_{i+1}  =  \text{arg max}_{\pi}[L_{\pi_i}(\pi) - CD_{KL}^{max}(\pi_{i},\pi)]$\\
+				\qquad\qquad$\text{where}\ C = 4\epsilon\gamma/(1-\gamma)^{2}$\\
+				\qquad\qquad$\text{and}\ L_{\pi_i}(\pi) = \eta(\pi_{i}) + \sum_{s}^{}\rho_{\pi_i}(s)\sum_{a}^{}\pi(a|s)A_{\pi_i}(s,a)$
+	\EndFor
+\end{algorithmic}
+\end{algorithm}
 \bibliographystyle{plain}
 \bibliography{reference}
 \end{document}
