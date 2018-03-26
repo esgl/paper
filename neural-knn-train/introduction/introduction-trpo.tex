@@ -1,1 +1,13 @@
-\paragraph{Trust Region Policy Optimization} Trust Region Policy Optimization \cite{Schulman2015Trust, Wu2017Scalable}
+\paragraph{Trust Region Policy Optimization, TRPO} In Trust Region Policy Optimization \cite{Schulman2015Trust, Wu2017Scalable}, an objective function(the "surrogate" objective) is maximized subject to a constraint on the size of the policy update. Specifically,
+\begin{equation}
+\begin{aligned}
+\max_{\theta} \ \hat{\mathbb{E}}_{t}\left[\frac{\pi_{\theta}(a_{t}|s_{t})}{\pi_{old}(a_{t}|s_{t})}\hat{A}_{t}\right]\\
+\text{subject to} \ \hat{\mathbb{E}}_{t}[\text{KL}[\pi_{old}(\cdot|s_{t}), \pi_{\theta}(\cdot|s_{t})]] \leq \delta
+\end{aligned}
+\end{equation}
+Here,$\theta_{old}$ is the vector of policy parameters before the update. This problem can efficiently approximately solved using the conjugate algorithm, after making a linear approximation to the objective and a quadratic approximation to the constraint.
+\paragraph{}The theory justifying TRPO actually suggests using a penalty instead of a constraint, i.e., solving the unconstrained optimization problem
+\begin{equation}
+\max_{\theta}\hat{\mathbb{E}}_{t}\left[\frac{\pi_{\theta}(a_{t}|s_{t})}{\pi_{old}(a_{t}|s_{t})}\hat{A}_{t} - \beta \text{KL}[\pi_{old}(\cdot|s_{t}), \pi_{\theta}(\cdot|s_{t})] \right]
+\end{equation}
+for some coefficient $\beta$. This follows from the fact that a certain surrogate objective (which computes the max KL over states instead of the mean) forms a lower bound (i.e., a pessimistic bound) on the performance of the policy $\pi$. TRPO uses a hard constraint rather than a penalty because it is hard to choose a single value of $\beta$ that performs well across different problem -- or even within a single problem, where the characteristics change over the course of learning. Hence, to achieve our goal of the first-order algorithm that emulates the monotonic improvement of TRPO.
