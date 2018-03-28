@@ -278,6 +278,83 @@
 		\EndLoop
 	\end{algorithmic}
 \end{algorithm} 
+
+\newpage
+\begin{algorithm}
+\caption{Double DQN with proportional prioritization}
+\begin{algorithmic}
+	\State Input: minibatch $k$, step-size $\eta$, replay period $K$, and size $N$, exponents $\alpha$ and $\beta$, budget $T$.
+	\State Initialize replay memory $\mathcal{H} = \Phi, \Delta = 0, p_{1}=1$
+	\State Observe $S_{0}$ and choose $A_{0} \sim \pi_{\theta}(S_{0})$
+	\For {$t=1 \to T$}
+		\State observe $S_{t}, R_{t}, \gamma_{t}$
+		\State Store transition $(S_{t-1}, A_{t-1}, R_{t}, \gamma_{t}, S_{t})$ with $\mathcal{H}$ with maximal priority $p_{t} = \max_{i}p_{i}$
+		\If {$t \equiv 0 \mod K$}
+			\For {$j= 1 \to k$}
+				\State Sample transition $j \sim P(j) = \frac{p_{j}^{\alpha}}{\max_{i}w_{i}}$
+				\State Compute importance-sampling weight $w_{j} = \frac{(N \cdot P(j))^{-\beta}}{\max_{i}w_{i}}$
+				\State Compute TD-error $\delta_{j} = R_{i} +\gamma_{j}Q_{target}(S_{j}, \text{argmax}_{a}Q(S_{j}, a)) - Q(S_{j-1}, A_{j-1})$
+				\State Update transition priority $p_{j} \leftarrow |\delta_{j}|$
+				\State Accumulate weight change $\Delta \leftarrow \Delta + w_{i}\cdot\delta_{j}\cdot\nabla_{\theta}Q(S_{j-1}, A_{j-1})$
+			\EndFor
+			\State Update weights $\theta \leftarrow \theta + \eta \cdot \Delta$, reset $\Delta = 0$
+			\State From time to time copy weights into target network $\theta_{target}\leftarrow \theta$
+		\EndIf
+		\State Choose action $A_{t} \sim \pi_{\theta}(S_{t})$
+	\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Distributed Prioritized Experience Replay}
+\begin{algorithmic}
+
+\Procedure {Actor($B, T$)}{} % \quad $\triangleright$ Run agent in environment instance, storing experiences.
+	\State $\theta_{0} \leftarrow$ LEARNER.PARAMETERS() % \quad $\triangleright$ Remote call to obtain latest network parameters.
+	\State $s_0 \leftarrow$ ENVIRONMENT.INITIALIZE()  % \quad $\triangleright$ Get initial state from environment.
+	\For {$t = 1 \to T$}
+		\State $a_{t-1} \leftarrow \pi_{\theta}(s_{t-1})$ %  \quad $\triangleright$ Select an action using the current policy.
+		\State $(r_t, \gamma_t, s_{t}) \leftarrow $ ENVIRONMENT.STEP($a_{t-1}$) % \quad $\triangleright$ Apply the action in the environment.
+		\State LOCALBUFFER.ADD($(s_{t-1}, a_{t-1}, r_t, \gamma_t)$) % \quad $\triangleright$ Add data to local buffer.
+		\If {LOCALBUFFER.SIZE() $\geq B$ } % \quad $\triangleright$ In a background thread, periodically send data to replay
+			\State $\tau \leftarrow$ LOCALBUFFER.GET($B$) % \quad $\triangleright$ Get buffered data (e.g. batch of multi-step transitions).
+			\State $p \leftarrow$ COMPUTERPRIORITIES($\tau$) % \quad $\triangleright$  Calculate priorities for experience (e.g. absolute TD error)
+			\State REPLAY.ADD($\tau, p$) % \quad $\triangleright$ Remote call to add experience to replay memory.
+		\EndIf
+		\State PERIODICALLY($\theta_{t} \leftarrow$ LEARNER.PARAMETERSOP()) % \quad $\triangleright$ Obtain latest network parameters. 
+	\EndFor
+\EndProcedure
+\State
+\Procedure {Learner({T})}{}
+	\State $\theta_{0} \leftarrow$ INITIALIZENETWORK() % \quad $\triangleright$ Update network using batches sampled from memory.
+	\For {$t=0 \to T$}
+		\State $id, \tau \leftarrow $ REPLAY.SAMPLE() % \quad $\triangleright$ Sample a prioritized batch of transitions (in a background thread).
+		\State $l_{t} \leftarrow $ COMPUTELOSS($\tau; \theta_{t}$) % \quad $\triangleright$ Apply learning rule; e.g. double Q-learning or DDPG.
+		\State $\theta_{t+1} \leftarrow$ UPDATEPARAMETERS($l_{t};\theta_{t}$)
+		\State $p \leftarrow$ COMPUTEPRIORITIES() % \quad $\triangleright$ Calculate priorities for experience, (e.g. absolute TD error).
+		\State REPLAY.SETPRIORITY($id, p$) % \quad $\triangleright$ Remote call to update priorities
+		\State PERIODICALLY(REPLAY.REMOVETOFIT()) % \quad $\triangleright$ Remove old experience from replay memory.
+	\EndFor
+\EndProcedure
+\end{algorithmic}
+\end{algorithm}
+
+\newpage
+
+\begin{algorithm}
+\caption{Policy iteration algorithm guaranteeing non-decreasing expected return $\eta$}
+\begin{algorithmic}
+	\State Initialize $\pi_{0}$
+	\For {$i = 0, 1, 2, ...$ until convergence}
+		\State Compute all advantage values $A_{\pi_i}(s,a)$.
+		\State Solve the constrained optimization problem
+		
+		\State \ $\pi_{i+1}  =  \text{arg max}_{\pi}[L_{\pi_i}(\pi) - CD_{KL}^{max}(\pi_{i},\pi)]$\\
+				\qquad\qquad$\text{where}\ C = 4\epsilon\gamma/(1-\gamma)^{2}$\\
+				\qquad\qquad$\text{and}\ L_{\pi_i}(\pi) = \eta(\pi_{i}) + \sum_{s}^{}\rho_{\pi_i}(s)\sum_{a}^{}\pi(a|s)A_{\pi_i}(s,a)$
+	\EndFor
+\end{algorithmic}
+\end{algorithm}
 \bibliographystyle{plain}
 \bibliography{reference}
 \end{document}

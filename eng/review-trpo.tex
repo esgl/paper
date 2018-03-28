@@ -1,0 +1,59 @@
+\ifx\allfiles\undefined
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Review of Trust Region Policy Optimization}
+\author{Guannan Hu}
+\maketitle
+\fi
+\paragraph{} Most algorithms for policy optimization can be classified into three broad categories:
+\begin{itemize}
+	\item policy iteration methods, which alternate between estimating the value function under the current policy and improving the policy;
+	\item policy gradient methods, which use an estimator of the gradient of the expected return obtain from sample trajectories;
+	\item derivative-free optimization methods, such as the cross-entropy method (CEM)and covariance matrix adaptation (CMA), which treat the return as a black box function to be optimized in terms of the policy parameters.
+\end{itemize} 
+
+\section{The Cross-Entropy Method}
+\paragraph{}The Cross-entropy (CE) \cite{Szita2006Learning} method is a general algorithm for (approximately) solving global optimization tasks of the form 
+\begin{equation}
+w^{*} = \text{arg max}_{w}S(w)
+\end{equation}
+where $S$ is a general real-value objective function, with an optimum value $\gamma = S(w^{*})$. \uline{The main idea of CE is maintain a distribution of possible solutions and update this distribution at each step.}
+\paragraph{}The CE method starts with a parametric family of probability distributions $\mathcal{F}$ and an initial distribution $f_{0} \in \mathcal{F}$. Under this distribution, the probability of drawing a high-value sample (having value near $\gamma^{*}$) is presumably very low; therefore, finding such samples by naive sampling is intractable. For any $\gamma \in \mathcal{R}$, let $g_{\geq \gamma}$ be uniform distribution over the set $\{w: S(w)\geq \gamma\}$. If one finds the distribution $f_{1} \in \mathcal{F}$ closest to $g_{\geq \gamma}$ with regard to the cross-entropy measure, the $f_{0}$ can be replaced by $f_{1}$ and $\gamma$-valued samples will have larger probabilities. For many distribution families, the parameters of $f_{1}$ can be estimated from samples of $f_{0}$. This estimation is tractable if the probability of the $\gamma$-level set is not very low with regard to $f_{0}$. Instead of the direct computation of the $\mathcal{F}$-distribution closest to $g_{\geq \gamma^{*}}$, we can proceed iteratively. We select a $\gamma_{0}$ appropriate for $f_{0}$, update the distribution parameters to obtain $f_{1}$, select $\gamma_{1}$, and so on, until we reach a sufficiently large $r_{k}$. Below we sketch the special case when $w$ is sampled from a member of gaussian distribution family.
+\paragraph{} Let the distribution of the parameter vector at iteration $t$ be $f_{t} \sim N(\mu_{t}, \delta_{t}^{2})$. After drawing $n$ sample vector $w_{1}, ..., w_{n}$ and obtaining their value $S(w_{1}), ..., S(w_{n})$, we select the best $\lfloor \rho \cdot n \rfloor$ samples. where $0<\rho<1$ is the selection ratio. This is equivalent to setting $\gamma_{t} = S(w_{\lfloor \rho \cdot n})$. Denoting the set of indices of the selected samples by $I \in \{1,2, ..., n\}$, the mean and the deviation of  the distribution is updated using
+\begin{equation}\label{mu_update}
+\mu_{t+1} := \frac{\sum_{i \in I}{}w_{i}}{|I|}
+\end{equation}
+and
+\begin{equation}\label{delta_update}
+\delta_{t+1}^{2} := \frac{\sum_{i \in I}{}(w_{i}-\mu_{t+1})^{T}(w_{i}-\mu_{t+1})}{|I|}
+\end{equation}
+\paragraph{}To preventing early convergence, it adapt a trick frequently used in particle filtering: at each iteration, it adds some extra noise to the distribution: instead of equation \ref{delta_update}, it used 
+\begin{equation}\label{delta_update_noise}
+\delta_{t+1}^{2} := \frac{\sum_{i \in I}{}(w_{i}-\mu_{t+1})^{T}(w_{i}-\mu_{t+1})}{|I|} + Z_{t+1}
+\end{equation}
+where $Z_{t+1}$ is a constant vector depending only on $t$.
+\ifx\allfiles\undefined
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+\fi

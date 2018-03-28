@@ -12,6 +12,8 @@
 \usepackage{algorithmicx} 
 \usepackage{algpseudocode}  
 \usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
 \renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
 \renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
 
@@ -31,18 +33,20 @@
 	\item In RL, the data distribution changes as the algorithm learns new behaviours, which can be problematic for deep learning methods that assume a fixed underlying distribution;
 	\item Stochastic gradient optimisation requires the use of small learning rates. Due to the global approximation nature of neural networks, high learning rates cause catastrophic interference. Low learning rates mean that experience can only be incorporated into a neural network slowly;
 	\item Environments with sparse reward signal can be difficult for a neural network to model as there may be very few instances where the reward is non-zero. This can be viewed as a form of class imbalance where low-reward samples outnumber high-reward samples by a unknown number. Consequently, the neural network disproportionally underperforms at predicting larger rewards, making it difficult for an agent to take the most rewarding actions;
-	\item Reward signal propagation by value-bootstrappiDeep Q-Learning Networkng techniques, such as Q-learning, results in reward information being propagated one step at a time through the history of previous interactions with the environment. This can be fairly efficient if updates happen in reverse order in which the transitions occur. However, in order to train on randomly selected transitions, and, in order to further stabilise training, required the use of slow updating \textit{target network} further slowing down reward propagation.
+	\item Reward signal propagation by value-bootstrapping Deep Q-Learning Networking techniques, such as Q-learning, results in reward information being propagated one step at a time through the history of previous interactions with the environment. This can be fairly efficient if updates happen in reverse order in which the transitions occur. However, in order to train on randomly selected transitions, and, in order to further stabilise training, required the use of slow updating \textit{target network} further slowing down reward propagation.
 \end{itemize} 
-\paragraph{Deep Q-learning Network}  Mnih et.al present the first deep learning model to successfully learn control policies directly from high-dimensional sensory input using reinforcement learning.\cite{silver2016mastering} The model is a convolutional neural network, trained with a variant of Q-learning, whose input is raw pixels and whose output is a value function estimating future rewards.
-\paragraph{Double Deep Q-learning Network} Double Deep Q-Learning Network
-\paragraph{Dueling Deep Q-learning Network} Dueling Deep Q-Learning Network
-\paragraph{Experience Replay and Prioritized Experience Replay} 
-\paragraph{Trusted Region Policy Optimization} Trust Region Policy Optimization
-\paragraph{Proximity Policy Optimization} Proximity Policy Optimization
-\paragraph{Neural Episodic Training} \cite{Pritzel2017Neural}
+\input{introduction/introduction-dqn}
+\input{introduction/introduction-ddqn}
+\input{introduction/introduction-dueling-dqn}
+\input{introduction/introduction-replay}
+\input{introduction/introduction-important-sampling}
+\input{introduction/introduction-trpo}
+\input{introduction/introduction-ppo}
+\input{introduction/introduction-nec}
 
 \ifx\allfiles\undefined
-\bibliographystyle{plain}
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
 \bibliography{reference}
 \end{document}
 \fi

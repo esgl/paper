@@ -1,0 +1,9 @@
+\paragraph{Deep Q-learning Network}  Mnih et.al present the first deep learning model to successfully learn control policies directly from high-dimensional sensory input using reinforcement learning.\cite{silver2016mastering} The model is a convolutional neural network, trained with a variant of Q-learning, whose input is raw pixels and whose output is a value function estimating future rewards. In DQN, the standard Q-learning update for the parameters after taking action $A_t$ in state $S_t$ and observing the immediate reward $R_{t+1}$ and resulting state $S_{t+1}$ is then 
+\begin{equation}
+\bm{\theta}_{t+1} = \bm{\theta}_{t} + \alpha (Y_{t}^{Q} - Q(S_{t}, A_{t}; \bm{\theta}_{t}))\nabla_{\bm{\theta}_{t}}Q(S_{t}, A_{t}; \bm{\theta}_{t})
+\end{equation}
+where $\alpha$ is a scalar step size and the target $Y_{t}^{Q}$ is defined as 
+\begin{equation}
+Y_{t}^{Q} \equiv R_{t+1} + \gamma max_{a}Q(S_{t+1},a;\bm{\theta}_{t})
+\end{equation}
+This update resembles stochastic gradient descent, updating the current value $Q(S_{t}, A_{t};\bm{\theta}_{t})$ towards a target value $Y_{t}^{Q}$.
