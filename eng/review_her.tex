@@ -1,0 +1,100 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Hindsight Experience Replay}
+\author{esgl Hu}
+\maketitle
+\begin{algorithm}
+\caption{Hindsight Experience Replay (HER)}
+\begin{algorithmic}
+	\State \textbf{Given}: 
+		\begin{itemize}
+			\item an off-policy RL algorithm $\mathbb{A}$	, \Comment e.g. DQN, DDPG, NAF, SDQN
+			\item a strategy $\mathbb{S}$ for sampling goals for replay,	 \Comment e.g. $\mathbb{S}(s_{0}, ..., s_{T})=m(s_{T})$
+			\item a reward function $r:\mathcal{S} \times \mathcal{A} \times \mathcal{G} \rightarrow \mathbb{R}$. \Comment e.g. $r(s,a,g)=-[f_{g}(s)=0]$
+		\end{itemize}
+	\State Initialize $\mathbb{A}$ \Comment e.g. initialize neural networks
+	\State Initialize replay buffer $R$
+	\For {episode=$1, M$}
+		\State Sample a goal $g$ and an initial state $s_{0}$.
+		\For {$t = 0, T - 1$}
+			\State Sample an action $a_{t}$ using the behavioral policy from $\mathbb{A}$:\\\qquad\qquad\qquad$a_{t} \leftarrow \pi_{b}(s_{t}||g)$\Comment $||$ denotes concatenation
+			\State Execute the action $a_t$ and observe a new state $s_{t+1}$
+		\EndFor
+		\For {t = 0, T-1}
+			\State $r_t := r(s_t, a_t, g)$
+			\State Store the transition $(s{t}||g, a_t, r_t, s_{t+1}||g)$ in R \Comment standard experience replay
+			\State Sample a set of additional goals for replay 
+			$G:= \mathbb{S}(\textbf{current episode})$
+			\For {$g^{'} \in G$}
+				\State $r^{'} := r(s_t, a_t, g^{'})$
+				\State Store the transition $(s_{t}||g^{'}, a_{t}, r^{'}, s_{t+1}||g^{'})$ in $R$
+			\EndFor
+		\EndFor
+		\For {$r = 1, N$}
+			\State Sample a minibatch $B$ from the replay buffer $R$
+			\State Perform one step of optimization using 
+		$\mathbb{A}$ and minibatch $B$
+		\EndFor
+	\EndFor
+	
+		
+\end{algorithmic}
+\end{algorithm}
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
