@@ -1,0 +1,9 @@
+\begin{thebibliography}{1}
+
+\bibitem{Andrychowicz2017Hindsight}
+Marcin Andrychowicz, Filip Wolski, Alex Ray, Jonas Schneider, Rachel Fong,
+  Peter Welinder, Bob Mcgrew, Josh Tobin, Pieter Abbeel, and Wojciech Zaremba.
+\newblock Hindsight experience replay.
+\newblock 2017.
+
+\end{thebibliography}
