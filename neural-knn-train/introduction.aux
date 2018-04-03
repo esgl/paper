@@ -13,6 +13,7 @@
 \@writefile{toc}{\contentsline {paragraph}{Double Deep Q-learning Network}{2}}
 \@writefile{toc}{\contentsline {paragraph}{Dueling Deep Q-learning Network}{2}}
 \@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces A popular single stream $Q$-network (\textbf  {top}) and the dueling $Q$-network (\textbf  {bottom}). The dueling network has two streams to separately estimate (scalar) state-value and the advantages for each action; the green output module implements equation (4\hbox {}) to combine them. Both networks output $Q$-values for each action.}}{2}}
+\newlabel{dueling_architecture}{{1}{2}}
 \newlabel{dueling_result}{{4}{2}}
 \citation{Schulman2015Trust}
 \citation{Wu2017Scalable}
@@ -26,6 +27,22 @@
 \@writefile{toc}{\contentsline {paragraph}{Adaptive KL Penalty Coefficient}{4}}
 \@writefile{toc}{\contentsline {paragraph}{}{4}}
 \citation{pritzel2017neural}
+\@writefile{toc}{\contentsline {paragraph}{Proximal Policy Optimization\cite  {Schulman2017Proximal}}{5}}
+\@writefile{toc}{\contentsline {paragraph}{Neural Episodic Control}{5}}
+\@writefile{toc}{\contentsline {paragraph}{}{5}}
+\@writefile{toc}{\contentsline {paragraph}{Differentiable Neural Dictionary (DND)}{5}}
+\newlabel{output_o}{{10}{5}}
+\newlabel{weight_w}{{11}{5}}
+\@writefile{toc}{\contentsline {paragraph}{}{5}}
+\@writefile{toc}{\contentsline {paragraph}{Agent Architecture}{5}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Architecture of episodic memory module for a single action $a$. Pixels representing the current state enter through a convolutional neural network on the bottom left and an estimate of $Q(s, a)$ exists top right. Gradients flow through the entire architecture.}}{6}}
+\newlabel{nec_agent_architecture_figure}{{2}{6}}
+\@writefile{toc}{\contentsline {paragraph}{}{6}}
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Neural Episodic Control}}{6}}
+\newlabel{nec_algorithm}{{1}{6}}
+\@writefile{toc}{\contentsline {paragraph}{}{6}}
+\newlabel{q_n_s_t_a_eq}{{13}{6}}
+\@writefile{toc}{\contentsline {paragraph}{}{6}}
 \bibstyle{unsrt}
 \bibdata{reference}
 \bibcite{Mnih2013Playing}{1}
@@ -40,5 +57,4 @@
 \bibcite{Wu2017Scalable}{10}
 \bibcite{Schulman2017Proximal}{11}
 \bibcite{pritzel2017neural}{12}
-\@writefile{toc}{\contentsline {paragraph}{Proximal Policy Optimization\cite  {Schulman2017Proximal}}{5}}
-\@writefile{toc}{\contentsline {paragraph}{Neural Episodic Control}{5}}
+\newlabel{update_q_i_eq}{{14}{7}}

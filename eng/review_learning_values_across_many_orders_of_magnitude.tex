@@ -1,0 +1,69 @@
+\ifx\allfiles\undefined
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath} 
+\usepackage{bm} 
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Learning values across many orders of magnitude \cite{Van2016Learning}}
+\author{Guannan Hu}
+\maketitle
+\fi
+
+\begin{algorithm}
+\caption{SGD on squared loss with Pop-Art}
+\begin{algorithmic}
+\State For a given differentiable function $h_{\bm{\theta}}$, initialize $\bm{\theta}$.
+\State Initialize $\bm{\theta} = I, \bm{b} = 0, \bm{\Sigma} =I$ and $\bm{\mu = 0}$.
+\While {learning}
+	\State Observe input $X$ and target $Y$
+	\State Use $Y$ to compute new scale $\bm{\Sigma}_{\text{new}}$ and new shift $\bm{\mu}_{\text{new}}$
+	\State $\bm{W} \leftarrow \bm{\Sigma}_{\text{new}}^{-1}\bm{\Sigma}\bm{W}, \bm{b} \leftarrow \bm{\Sigma}_{\text{new}}^{-1}(\bm{\Sigma b} + \bm{\mu} - \bm{\mu}_{\text{new}})$ \Comment rescale $\bm{W}$ and $\bm{b}$
+	\State $\bm{\Sigma} \leftarrow \bm{\Sigma}_{\text{new}}, \bm{\mu} \leftarrow \bm{\mu}_{\text{new}}$ \Comment update scale and shift
+	\State $\bm{h} \leftarrow h_{\bm{\theta}}(X)$ \Comment store outputof $h_{\bm{\theta}}$ 
+	\State $\bm{J} \leftarrow (\nabla_{\bm{\theta}}h_{\bm{\theta},1}(X), ..., \nabla_{\bm{\theta}}h_{\bm{\theta}, m}(X))$ \Comment compute Jacobian of $h_{\bm{\theta}}$
+	\State $\bm{\delta} \leftarrow \bm{Wh} + \bm{b} - \bm{\Sigma}^{-1}(Y - \bm{\mu})$ \Comment compute normalized error
+	\State $\bm{\theta} \leftarrow \bm{\theta} - \alpha\bm{J}\bm{W}^{\text{T}}\bm{\delta}$ \Comment compute SGD update for $\bm{\theta}$
+	\State $\bm{W} \leftarrow \bm{W} - \alpha\bm{\delta}\bm{h}^{\text{T}}$ \Comment compute SGD update for $\bm{W}$
+	\State $\bm{b} \leftarrow \bm{b} - \alpha\bm{\delta}$ \Comment SGD update for $\bm{b}$
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+
+
+\begin{algorithm}
+\caption{Normalized SGD}
+\begin{algorithmic}
+\State For a given differentiable function $h_{\bm{\theta}}$, initialize $\bm{\theta}$.
+\While {learning}
+	\State Observe input $X$ and target $Y$
+	\State Use $Y$ to compute new scale $\bm{\Sigma}$
+	\State $\bm{h} \leftarrow h_{\bm{\theta}}(X)$  \Comment store output of $h_{\bm{\theta}}$
+	\State $\bm{J} \leftarrow (\nabla h_{\bm{\theta}, 1}, ..., \nabla h_{\bm{\theta}, m}(X)))^{\text{T}}$ \Comment compute Jacobian of $h_{\bm{\theta}}$
+	\State $\bm{\delta} \leftarrow \bm{Wh} + \bm{b} - Y$ \Comment Compute unnormalized error 
+	\State $\bm{\theta} \leftarrow \bm{\theta} - \alpha\bm{J}(\bm{\Sigma}^{-1}\bm{W})^{\text{T}}\bm{\Sigma}^{-1}\bm{\delta}$ \Comment update $\bm{\theta}$ with scaled SGD
+	\State $\bm{W} \leftarrow \bm{W} - \alpha\bm{\delta}\bm{g}^{\text{T}}$ \Comment update $\bm{W}$ with SGD
+	\State $\bm{b} \leftarrow \bm{b} - \alpha\bm{\delta}$ \Comment update $\bm{b}$ with SGD
+\EndWhile
+\end{algorithmic}
+\end{algorithm}
+\ifx\allfiles\undefined
+\bibliographystyle{plain}
+\bibliography{reference}
+\end{document}
+\fi

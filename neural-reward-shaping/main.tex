@@ -1,0 +1,38 @@
+\def\allfiles{}
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{$\gamma$-Reward Shaping in Reinforcement Learning}
+\author{Guannan Hu}
+\maketitle
+
+\input{abstract}
+\input{introduction}
+\input{relate_works}
+\input{gamma_reward_shaping}
+\input{experiments}
+\input{conclusion}
+
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\end{document}
