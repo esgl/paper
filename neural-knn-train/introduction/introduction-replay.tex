@@ -1,2 +1,27 @@
 \paragraph{Experience Replay and Prioritized Experience Replay} Experience Replay  \cite{wang2016sample} has gained popularity in DQN, where it it often motivated as a technique for reducing sample correlation. Experience Replay addresses both of these issue: with experience stored in a replay memory, it becomes possible to break the temporal correlations by mixing more and less recent experience for the updates, and rare experience will be used for more than just a single update. In general, experience replay can reduce the amount of experience required to learn, and replace it with more computation and more memory - which are often cheaper resources that the RL's agent's interactions with its environment. In Experience Replay, the experience transitions were uniformly sampled from a replay memory. the transition are replayed at the same frequency that they were original experienced, regardless of their significance.
 and in Prioritized Experience Replay \cite{schaul2015prioritized}, so as to replay important transitions more frequently, and therefore learn more efficiently. and the distributed prioritized experience relpay \cite{horgan2018distributed} the algorithm decouples acting from learning: the actors interact with their own instance of the environment by selecting actions according to a shared neural network, and accumulate the resulting experience in a shared experience replay memory; the learner replays samples of experience and updates the neural network. 
+
+\begin{algorithm}
+\caption{Double DQN with proportional prioritization}
+\begin{algorithmic}
+	\State \textbf{Input}: minibatch $k$, step-size $\eta$, replay period $K$ and size $N$, exponents $\alpha$ and $\beta$, budget $T$.
+	\State Initialize replay memory $\mathcal{H}=\Phi, \Delta=0, p_{1}=1$
+	\State Observe $S_{0}$ and choose $A_{0} \sim \pi_{\theta}(S_{0})$
+	\For {$t = 1$ to $T$}
+		\State Observe $S_t, R_t, \gamma_{t}$
+		\State Store transition $(S_{t-1}, A_{t-1}, R_{t}, \gamma_t, S_{t})$ with $\mathcal{H}$ with maximal priority $p_{t}=\text{max}_{i<t}p_{i}$
+		\If {$t \equiv 0$ mod $K$}
+			\For {$j = 1$ to $k$}
+				\State Sample transition $j \sim P(j)=p_{j}^{\alpha}/\sum_{i}p_{i}^{\alpha}$
+				\State Compute importance-sampling weight $w_{j}=(N \cdot P(j))^{-\beta}/\text{max}_{i}w_{i}$
+				\State Compute TD-error $\delta_{j} = R_{j} + \gamma_{j}Q_{\text{target}}(S_{j}, \text{arg max}_{a}Q(S_j, a)) - Q(S_{j-1}, A_{j-1})$
+				\State Update transition priority $p_{j} \leftarrow |\delta_{j}|$
+				\State Accumulate weight-change $\Delta \leftarrow \Delta + w_{j} \cdot \delta \cdot \nabla_{\theta}Q(S_{j-1}, A_{j-1})$
+			\EndFor
+			\State Update weights $\theta \leftarrow \theta + \eta \cdot \Delta$, reset $\Delta = 0$
+			\State From time to time copy weights into target network $\theta_{\text{target}} \leftarrow \theta$
+		\EndIf
+		\State Choose action $A_{t} \sim \pi_{\theta}(S_{t})$
+	\EndFor
+\end{algorithmic}
+\end{algorithm}

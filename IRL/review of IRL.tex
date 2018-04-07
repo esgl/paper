@@ -1,0 +1,76 @@
+\def\allfiles{}
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Review of Inverse Reinforcement Learning}
+\author{Guannan Hu}
+\maketitle
+
+\section{Inverse Reinforcement Learning}
+\paragraph{}The inverse reinforcement learning (IRL) problem can be characterized informally as follow:
+\begin{itemize}
+	\item[] \textbf{Given} 1) measurements of an agent's behaviour over time, in a variety of circumstances, 2) if needed, measurements of the sensory inputs to that agent; 3) if available, a model of the environment.
+	\item[] \textbf{Determine} the reward function being optimized.
+\end{itemize} 
+
+\paragraph{} \textbf{\uline{In examining animal and human behaviour we must consider the reward function as an unknown to be ascertained through empirical investigation.}}
+
+\paragraph{} 
+\begin{tcolorbox}
+\textbf{The inverse reinforcement learning problem is to find a reward function can explain observed behaviour.} We begin with the simple case where the state space is finite, the model is known, and the complete policy is observed. Most precisely, we are given a finite state space $S$, a set of $k$ actions $A = {a_1, ..., a_{k}}$, transition probabilities $\{P_{sa}\}$, a discount factor $\gamma$, and a policy $\pi$; we then wish to find the set of possible reward functions $R$ such that $\pi$ is an optimal policy in the MDP $(S, A, \{P_{sa}\}, \gamma, R)$.
+\end{tcolorbox}
+
+\section{Markov Decision Processes}
+\paragraph{} A (finite) MDP is a tuple $(S, A, {P_{sa}}, \gamma, R)$, where
+\begin{itemize}
+	\item $S$ is a finite set of $N$ \textbf{states}.
+	\item $A = \{a_{1}, ..., a_{k}\}$ is a set of $k$ \textbf{actions}.
+	\item $P_{sa}(\cdot)$ are the state \textbf{transition probabilities} upon taking action $a$ in state $s$.
+	\item $\gamma \in [0, 1)$ is the \textbf{discount factor}.
+	\item $R : S \rightarrow \mathbb{R}$ is the \textbf{reinforcement function} bounded in absolute value by $R_{max}$.
+\end{itemize}
+A \textbf{policy} is defined as any map $\pi : S \rightarrow A$, and the \textbf{value function} for a policy $\pi$, evaluated at any state $s_{1}$ is given by 
+\begin{equation}
+V^{\pi}(s_{1}) = \mathbb{E}[R(s_{1}) + \gamma R(s_{2}) + \gamma^{2} R(s_{3}) + \cdots | \pi]
+\end{equation}
+where the expectation is over the distribution of the state sequence $(s_1, s_2, ...)$,we pass through when we execute the policy $\pi$ starting from $s_1$. We also defined the \textbf{Q-function} according to 
+\begin{equation}
+	Q^{\pi}(s,a) = R(s) + \gamma \mathbb{E}_{s^{'} \sim P_{s,a}(\cdot)}[V^{\pi}(s^{'})]
+\end{equation}
+The \textbf{optimal value function} is $V^{*}(s) = sup_{\pi}V^{\pi}(s)$, and the \textbf{optimal Q-function} is $Q^{*}(s,a)= sup_{\pi}Q^{\pi}(s,a)$.
+\section{Basic Properties of MDPs}
+\paragraph{Theorem 1(Bellman Equations)} \textit{Let an MDP $M = (S,A, \{P_{sa}\}, \gamma, R)$ and a policy $\pi : S \rightarrow A$ be given. Then, for all $s \in S, a \in A, V^{\pi}$ and $Q^{\pi}$ satisfy}
+\begin{equation}
+	V^{\pi}(s) = R(s) + \gamma \sum\limits_{s^{'}}P_{s\uline{\pi(s)}}(s^{'})V^{\pi}(s^{'})
+\end{equation} 
+\begin{equation}
+	Q^{\pi}(s,a) = R(s) + \gamma \sum\limits_{s^{'}}P_{s\uline{a}}(s^{'})V^{\pi}(s^{'})
+\end{equation}
+\paragraph{Theorem 2 (Bellman Optimality)} \textit{Let an MDP $M = (S, A, \{P_{sa}\}, \gamma, R)$ and a policy $\pi : S \rightarrow A$ be given. Then $\pi$ is an optimal policy for $M$ if and only if, for all $s \in S$},
+\begin{equation}
+	\pi(s) \in \text{arg} \max\limits_{a \in A}Q^{\pi}(s,a)
+\end{equation}
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\end{document}
