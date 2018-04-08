@@ -40,6 +40,26 @@
 \textbf{The inverse reinforcement learning problem is to find a reward function can explain observed behaviour.} We begin with the simple case where the state space is finite, the model is known, and the complete policy is observed. Most precisely, we are given a finite state space $S$, a set of $k$ actions $A = {a_1, ..., a_{k}}$, transition probabilities $\{P_{sa}\}$, a discount factor $\gamma$, and a policy $\pi$; we then wish to find the set of possible reward functions $R$ such that $\pi$ is an optimal policy in the MDP $(S, A, \{P_{sa}\}, \gamma, R)$.
 \end{tcolorbox}
 
+\newpage
+\section{Inverse Reinforcement Learning Review}
+\begin{center}
+Acquiring a reward function is important (and challengeing)
+\end{center}
+\paragraph{Goal of Inverse RL}: infer reward function underlying expert demonstrations
+\begin{tcolorbox}
+\textbf{Evaluating the partition function}:
+\begin{itemize}
+	\item initial approaches solve the MDP in the inner loop and/or assume known dynamics
+	\item with unknown dynamics, estimate $Z$ using samples
+\end{itemize}
+
+\textbf{Connection to generative adversarial networks}:
+\begin{itemize}
+	\item sampling-based MaxEnt IRL is a GAN with a special form of discriminator and uses RL to optimize the generator.
+\end{itemize}
+\end{tcolorbox}
+\newpage
+
 \section{Markov Decision Processes}
 \paragraph{} A (finite) MDP is a tuple $(S, A, {P_{sa}}, \gamma, R)$, where
 \begin{itemize}
@@ -70,6 +90,15 @@ The \textbf{optimal value function} is $V^{*}(s) = sup_{\pi}V^{\pi}(s)$, and the
 \begin{equation}
 	\pi(s) \in \text{arg} \max\limits_{a \in A}Q^{\pi}(s,a)
 \end{equation}
+
+\section{Furthe Reading on Inverse RL}
+\begin{itemize}
+	\item[-] \textbf{MaxEnt-based IRL}: Ziebart et al. AAAI'08, Wulfmeier et al. arXiv'16, Finn et al. ICML'16
+	\item[-] \textbf{Adversarial IRL}: Ho \& Ermon NIPS'16, Finn*, Christiano* et al. arXiv'16, Baram et al. ICML'17
+	\item[-] \textbf{Handling multimodality}: Li et al. arXiv'17, Hausman et al.arXiv'17, Wang, Merel et al. arXiv'17
+	\item[-] \textbf{Handling domain shift}: Stadie et al. ICLR' 17
+\end{itemize}
+
 %\bibliographystyle{plain}
 \bibliographystyle{unsrt}
 \bibliography{reference}
