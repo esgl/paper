@@ -1,0 +1,55 @@
+\def\allfiles{}
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{color}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Review of Generative Adversarial Imitation Learning}
+\author{Guannan Hu}
+\maketitle
+
+\begin{algorithm}
+\caption{Generative adversarial imitation learning}
+\begin{algorithmic}[1]
+	\State \textbf{Input:} Expert trajectories $\tau_{E} \sim \pi_{E}$, initial policy and discriminator parameters $\theta_{0}, w_{0}$
+	\For {$i = 0, 1, 2, ...$}
+		\State Sample trajectories $\tau_{i} \sim \pi_{\theta_{i}}$
+		\State Update the discriminator parameters from $w_i$ to $w_{i+1}$ with the gradient
+			\begin{equation}
+			\hat{\mathbb{E}}_{\tau_{i}}[\nabla_{w}\log(D_{w}(s,a))] + \hat{\mathbb{E}}_{\tau_{E}}[\nabla_{w}\log(1-D_{w}(s,a))]
+			\end{equation}
+		\State Take a policy step from $\theta_{i}$ to $\theta_{i+1}$, using the TRPO rule with cost function $\log(D_{w_{i+1}}(s,a))$. Specifically, take a KL-constrained natural gradient step with 
+		\begin{equation}
+		\begin{array}{l}
+		\hat{\mathbb{E}}_{\tau_{i}}[\nabla_{\theta}\log\pi_{\theta}(a|s)Q(s,a)] - \lambda\nabla_{\theta}H(\pi_{\theta}) \\
+		\text{where}\ Q(\bar{s}, \bar{a}) = \hat{\mathbb{E}}_{\tau_{i}}[\log(D_{w_{i+1}}(s,a))|s_{0}=\bar{s}, a_{0}=\bar{a}]
+		
+		\end{array}
+		\end{equation}
+	\EndFor
+\end{algorithmic}
+\end{algorithm}
+
+
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\end{document}
