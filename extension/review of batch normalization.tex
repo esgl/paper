@@ -1,0 +1,79 @@
+\def\allfiles{}
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Review of Batch Normalization}
+\author{Guannan Hu}
+\maketitle
+
+\paragraph{} Batch Normalization allows us to {\color{red}{use much higher learning rates and be less careful about initialization}}, and it also acts as a {\color{red}{regularizer}}, in some cases eliminating the need for Dropout.
+
+\begin{algorithm}
+\caption{Batch Normalizing Transform, applied to activation x over a mini-batch}
+\label{agl.1}
+\begin{algorithmic}
+\State \textbf{Input:} Values of $x$ over a mini-batch: $\mathcal{B}={x_{1...m}}$; Paramters to be learned: $\gamma, \beta$
+\State \textbf{Output:} ${y_i=\text{BN}_{\gamma, \beta}(x_i)}$
+\State \qquad$\mu_{\mathcal{B}} \leftarrow \frac{1}{m}\sum\limits_{i=1}^{m}x_i$ \Comment mini-batch mean
+\State \qquad$\sigma_{\mathcal{B}}^{2} \leftarrow \frac{1}{m}\sum\limits_{i=1}^{m}(x_i - \mu_{\mathcal{B}})^{2}$ \Comment mini-batch variance
+\State \qquad$\hat{x}_i = \frac{x_i - \mu_{\mathcal{B}}}{\sqrt{\sigma_{\mathcal{B}}^{2}} + \epsilon}$ \Comment normalize
+\State \qquad$y_i \leftarrow \gamma\hat{x}_i + \beta \equiv \text{BN}_{\gamma, \beta}(x_i)$ \Comment Scale and shift
+\end{algorithmic}
+\end{algorithm}
+
+\paragraph{}During training we beed to backpropagate the gradient of loss $l$ through this transformation, as well as compute the gradients with respect to the paramters of the BN transform. We use chain rule, as follows:\\
+$\frac{\partial{l}}{\partial{\hat{x}_{i}}} = \frac{\partial{l}}{\partial{y_i}} \cdot \gamma$\\
+$\frac{\partial{l}}{\partial{\sigma_{\mathcal{B}}^{2}}} = \sum_{i=1}^{m}\frac{\partial{l}}{\partial{\hat{x}_i}} \cdot (x_i - \mu_{\mathcal{B}}) \cdot \frac{-1}{2}(\sigma_{\mathcal{B}}^{2} + \epsilon)^{\frac{-3}{2}}$\\
+$\frac{\partial{l}}{\partial{\mu_{\mathcal{B}}}} = \left(\sum_{i=1}^{m}\frac{\partial{l}}{\partial{\hat{x}_i}} \cdot \frac{-1}{\sqrt{\sigma_{\mathcal{B}}^{2} + \epsilon}}\right) + \frac{\partial{l}}{\partial{\sigma_{\mathcal{B}}^{2}}} \cdot \frac{\sum_{i=1}^{m}{-2(x_i - \mu_{\mathcal{B}})}}{m}$\\
+$\frac{\partial{l}}{\partial{x_i}} = \frac{\partial{l}}{\partial{\hat{x}_i}} \cdot \frac{1}{\sqrt{\sigma_{\mathcal{B}} + \epsilon}} + \frac{\partial{l}}{\partial{\sigma_{\mathcal{B}}^{2}}} \cdot \frac{2(x_i - \mu_{\mathcal{B}})}{m} + \frac{\partial{l}}{\partial{\mu_{\mathcal{B}}}} \cdot \frac{1}{m}$\\
+$\frac{\partial{l}}{\partial\gamma} = \sum_{i=1}^{m}\frac{\partial{l}}{\partial{y_i}} \cdot \hat{x}_i$ \\
+$\frac{\partial{l}}{\partial{\beta}} = \sum_{i=}^{m}\frac{\partial{l}}{\partial{y_i}}$
+\begin{algorithm}
+\caption{Training a Batch-Normalized Network}
+\begin{algorithmic}[1]
+\Require  Network $N$ with trainable paramters $\Theta$;
+\Ensure	Batch-normalized network for ingerence, $N_{\text{BN}}^{\text{inf}}$
+\State $N_{\text{BN}}^{\text{tr}} \leftarrow N$ \Comment Training BN network
+\For {$k=1...K$}
+	\State Add transformation $y{(k)}=\text{BN}_{\gamma^{(k)}, \beta^{(k)}}(x^{(k)})$ to $N_{\text{BN}}^{\text{tr}}$ (Alg.\ref{agl.1})
+	\State Modify each layer in $N_{\text{BN}}^{\text{tr}}$ with input $x^{(k)}$ to take $y^{(k)}$ instead
+\EndFor	
+\State Train $N_{\text{BN}}^{\text{tr}}$ to optimize the parameters $\Theta \bigcup \{\gamma^{(k)}, \beta^{(k)}\}_{k=1}^{K}$
+\State $N_{\text{BN}}^{\text{inf}} \leftarrow N_{\text{BN}}^{\text{tr}}$ \Comment Inference BN network with frozen paramters
+\For {$k=1...K$}
+\State //For clarity, $x \equiv x^{(k)}, \gamma \equiv \gamma^{(k)}, \mu_{\mathcal{B}} \equiv \mu_{\mathcal{B}}^{(k)}$, etc.
+\State Process multiple training mini-batches $\mathcal{B}$, each of size $m$, and average over them:
+\begin{equation*}
+\begin{array}{rcl}
+\text{E}[x] & \leftarrow & \text{E}_{\mathcal{B}}[\mu_{\mathcal{B}}] \\
+\text{Var}[x] & \leftarrow & \frac{m}{m-1}\text{E}_{\mathcal{B}}[\sigma_{\mathcal{B}}^{2}]
+\end{array}
+\end{equation*}
+\State In $N_{\text{BN}}^{\text{inf}}$, replace the transform $y = \text{BN}_{\gamma, \beta}(x)$ with $y = \frac{\gamma}{\sqrt{\text{Var}[x] + \epsilon}} \cdot x + (\beta - \frac{\gamma\text{E}(x)}{\sqrt{\text{Var}[x] + \epsilon}})$
+\EndFor
+\end{algorithmic}
+\end{algorithm}
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\end{document}

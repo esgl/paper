@@ -1,9 +1,9 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.1.24)  11 APR 2018 23:04
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2018.1.24)  11 APR 2018 23:31
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**"review of GAIL.tex"
-(./review of GAIL.tex
+**"review of rnn and lstm.tex"
+(./review of rnn and lstm.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
@@ -490,8 +490,8 @@ Package: etoolbox 2015/08/02 v2.2a e-TeX tools for LaTeX (JAW)
 \tcb@out=\write4
 \tcb@record@out=\write5
 )
-(./review of GAIL.aux)
-\openout1 = `"review of GAIL.aux"'.
+(./review of rnn and lstm.aux)
+\openout1 = `"review of rnn and lstm.aux"'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
 LaTeX Font Info:    ... okay on input line 24.
@@ -608,40 +608,135 @@ LaTeX Font Info:    Try loading font information for U+msb on input line 27.
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-Underfull \hbox (badness 1038) in paragraph at lines 39--40
-[] \OT1/cmr/m/n/12 Take a pol-icy step from $\OML/cmm/m/it/12 ^^R[]$ \OT1/cmr/m
-/n/12 to $\OML/cmm/m/it/12 ^^R[]$\OT1/cmr/m/n/12 , us-ing the TRPO rule with co
-st func-tion
+<pic/1.PNG, id=4, 553.31718pt x 206.27063pt>
+File: pic/1.PNG Graphic file (type png)
+ <use pic/1.PNG>
+Package pdftex.def Info: pic/1.PNG used on input line 31.
+(pdftex.def)             Requested size: 241.84843pt x 90.15819pt.
+
+<pic/2.PNG, id=6, 553.31718pt x 205.5178pt>
+File: pic/2.PNG Graphic file (type png)
+ <use pic/2.PNG>
+Package pdftex.def Info: pic/2.PNG used on input line 40.
+(pdftex.def)             Requested size: 241.84843pt x 89.82915pt.
+
+<pic/3.PNG, id=7, 422.32782pt x 86.57344pt>
+File: pic/3.PNG Graphic file (type png)
+ <use pic/3.PNG>
+Package pdftex.def Info: pic/3.PNG used on input line 47.
+(pdftex.def)             Requested size: 241.84843pt x 49.57721pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+<pic/4.PNG, id=8, 303.38344pt x 161.10187pt>
+File: pic/4.PNG Graphic file (type png)
+ <use pic/4.PNG>
+Package pdftex.def Info: pic/4.PNG used on input line 56.
+(pdftex.def)             Requested size: 193.47578pt x 102.74101pt.
+
+<pic/5.PNG, id=9, 98.61844pt x 94.85437pt>
+File: pic/5.PNG Graphic file (type png)
+ <use pic/5.PNG>
+Package pdftex.def Info: pic/5.PNG used on input line 64.
+(pdftex.def)             Requested size: 96.73788pt x 93.04637pt.
+
+<pic/6.PNG, id=10, 264.23718pt x 161.85469pt>
+File: pic/6.PNG Graphic file (type png)
+ <use pic/6.PNG>
+Package pdftex.def Info: pic/6.PNG used on input line 73.
+(pdftex.def)             Requested size: 193.47948pt x 118.5135pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 71--83
+[]$[]$ $[]$ 
  []
 
-No file "review of GAIL".bbl.
+<pic/7.PNG, id=11, 272.51813pt x 159.59625pt>
+File: pic/7.PNG Graphic file (type png)
+ <use pic/7.PNG>
+Package pdftex.def Info: pic/7.PNG used on input line 90.
+(pdftex.def)             Requested size: 193.47948pt x 113.30681pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 88--101
+[]$[]$ $[]$ 
+ []
+
+<pic/8.PNG, id=12, 260.47313pt x 160.34906pt>
+File: pic/8.PNG Graphic file (type png)
+ <use pic/8.PNG>
+Package pdftex.def Info: pic/8.PNG used on input line 108.
+(pdftex.def)             Requested size: 193.47948pt x 119.10663pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 106--118
+[]$[]$ $[]$ 
+ []
+
+<pic/9.PNG, id=13, 265.74281pt x 162.6075pt>
+File: pic/9.PNG Graphic file (type png)
+ <use pic/9.PNG>
+Package pdftex.def Info: pic/9.PNG used on input line 125.
+(pdftex.def)             Requested size: 193.47948pt x 118.39233pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 123--136
+[]$[]$ $[]$ 
+ []
+
+<pic/10.PNG, id=14, 253.69781pt x 163.3603pt>
+File: pic/10.PNG Graphic file (type png)
+ <use pic/10.PNG>
+Package pdftex.def Info: pic/10.PNG used on input line 143.
+(pdftex.def)             Requested size: 193.47948pt x 124.58884pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 141--155
+[]$[]$ $[]$ 
+ []
+
+<pic/11.PNG, id=15, 254.45062pt x 167.12437pt>
+File: pic/11.PNG Graphic file (type png)
+ <use pic/11.PNG>
+Package pdftex.def Info: pic/11.PNG used on input line 162.
+(pdftex.def)             Requested size: 193.47948pt x 127.08212pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 160--171
+[]$[]$ $[]$ 
+ []
+
+<pic/12.PNG, id=16, 237.88875pt x 159.59625pt>
+File: pic/12.PNG Graphic file (type png)
+ <use pic/12.PNG>
+Package pdftex.def Info: pic/12.PNG used on input line 179.
+(pdftex.def)             Requested size: 193.47948pt x 129.80798pt.
+
+Overfull \hbox (2.61108pt too wide) in paragraph at lines 177--193
+[]$[]$ $[]$
+ []
+
+No file "review of rnn and lstm".bbl.
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] (./review of GAIL.aux) ) 
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./pic/1.PNG>] [2 <./pic/2.
+PNG> <./pic/3.PNG> <./pic/4.PNG> <./pic/5.PNG> <./pic/6.PNG>] [3 <./pic/7.PNG> 
+<./pic/8.PNG> <./pic/9.PNG> <./pic/10.PNG>] [4 <./pic/11.PNG> <./pic/12.PNG>] (
+./review of rnn and lstm.aux) ) 
 Here is how much of TeX's memory you used:
- 13012 strings out of 493029
- 246781 string characters out of 6136234
- 295975 words of memory out of 5000000
- 16266 multiletter control sequences out of 15000+600000
+ 13075 strings out of 493029
+ 247494 string characters out of 6136234
+ 301072 words of memory out of 5000000
+ 16315 multiletter control sequences out of 15000+600000
  17509 words of font info for 65 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 54i,10n,73p,910b,370s stack positions out of 5000i,500n,10000p,200000b,80000s
-</
-usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/sh
-are/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/te
-xlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/t
-exmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-di
-st/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1
-/public/amsfonts/cm/cmr17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
-/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
-s/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cms
-y10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm
-10.pfb>
-Output written on "review of GAIL.pdf" (1 page, 102200 bytes).
+ 54i,11n,73p,918b,289s stack positions out of 5000i,500n,10000p,200000b,80000s
+</usr/share/texlive/texmf-dist/fonts/type1/publi
+c/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
+onts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.
+pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></us
+r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on "review of rnn and lstm.pdf" (4 pages, 352187 bytes).
 PDF statistics:
- 55 PDF objects out of 1000 (max. 8388607)
- 40 compressed objects within 1 object stream
+ 73 PDF objects out of 1000 (max. 8388607)
+ 35 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 13 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 73 words of extra memory for PDF output out of 10000 (max. 10000000)
 
