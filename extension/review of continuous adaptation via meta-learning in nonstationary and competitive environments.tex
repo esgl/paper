@@ -1,0 +1,37 @@
+\def\allfiles{}
+\documentclass[12pt,a4paper]{article}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\usepackage{indentfirst}
+\usepackage{pifont}
+\usepackage{ulem}
+\usepackage{xcolor}
+\usepackage{algorithm} 
+\usepackage{algorithmicx} 
+\usepackage{algpseudocode}  
+\usepackage{amsmath}  
+\usepackage{bm}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\renewcommand{\algorithmicrequire}{\textbf{Input:}}  % Use Input in the format of Algorithm  
+\renewcommand{\algorithmicensure}{\textbf{Output:}} % Use Output in the format of Algorithm  
+
+\setlength{\parindent}{0em}
+\geometry{left=2.0cm,right=2.0cm,top=2.5cm,bottom=2.5cm}
+
+\begin{document}
+\title{Review of Continuous Adaptation Via Meta-Learning in Nonstationary and Competitive Environments}
+\author{Guannan Hu}
+\maketitle
+\section{A Probabilistic View of Model-Agnostic Meta-LEarning (MAML)}
+\paragraph{}Assume that we are given a distribution over tasks, $\mathcal{D}(T)$, where each task, $T$, is a tuple:
+\begin{equation}
+T := (L_T, P_T(\mathbf{x}), P_T(\mathbf{x}_{t+1}|\mathbf{x}, \mathbf{a}_t), H)
+\end{equation}
+$L_T$ is a task specific loss function that maps a trajectory, $\bm{\tau} := (\mathbf{x}_0, \mathbf{a}_1, \mathbf{x}_1, R_1, ..., \mathbf{a}_H, \mathbf{x}_H, R_H) \in \mathcal{T}$, to a loss value, i.e., $L_T: \mathcal{T} \rightarrow \mathbb{R}$; $P_T{\mathbf{x}}$ and $P_T(\mathbf{x}_{t+1}|\mathbf{x}_t, \mathbf{a}_t)$ define the Markovian dynamics of the environment in task $T$; $H$ denotes the horizon; observations, $\mathbf{x}_t$, and actions, $\mathbf{a}_t$, are elements (typically, vectors) of the observation space, $\mathcal{X}$, and action space, $\mathcal{A}$, respectively. The loss of a trajectory, $\bm{\tau}$, is the negative cumulative reward, $L_T(\bm{\tau}) := -\sum_{t=1}^{H}R_t$.
+%\bibliographystyle{plain}
+\bibliographystyle{unsrt}
+\bibliography{reference}
+\end{document}
