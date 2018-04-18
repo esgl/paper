@@ -28,9 +28,96 @@
 \section{A Probabilistic View of Model-Agnostic Meta-LEarning (MAML)}
 \paragraph{}Assume that we are given a distribution over tasks, $\mathcal{D}(T)$, where each task, $T$, is a tuple:
 \begin{equation}
+\label{equat_1}
 T := (L_T, P_T(\mathbf{x}), P_T(\mathbf{x}_{t+1}|\mathbf{x}, \mathbf{a}_t), H)
 \end{equation}
 $L_T$ is a task specific loss function that maps a trajectory, $\bm{\tau} := (\mathbf{x}_0, \mathbf{a}_1, \mathbf{x}_1, R_1, ..., \mathbf{a}_H, \mathbf{x}_H, R_H) \in \mathcal{T}$, to a loss value, i.e., $L_T: \mathcal{T} \rightarrow \mathbb{R}$; $P_T{\mathbf{x}}$ and $P_T(\mathbf{x}_{t+1}|\mathbf{x}_t, \mathbf{a}_t)$ define the Markovian dynamics of the environment in task $T$; $H$ denotes the horizon; observations, $\mathbf{x}_t$, and actions, $\mathbf{a}_t$, are elements (typically, vectors) of the observation space, $\mathcal{X}$, and action space, $\mathcal{A}$, respectively. The loss of a trajectory, $\bm{\tau}$, is the negative cumulative reward, $L_T(\bm{\tau}) := -\sum_{t=1}^{H}R_t$.
+\paragraph{}The goal of meta-learning is to find a procedure which, given access to limited experience on a task sampled from $\mathcal{D}(T)$, can produce a good policy for solving it. More formally, after querying $K$ trajectories from a task $T \sim \mathcal{D}(T)$ under policy $\pi_{\theta}$, denoted $\bm{\tau}_{\theta}^{1:K}$, we would like to construct a new, task-specific policy, $\pi_{\phi}$, that would minimize the expected subsequent loss on the task $T$. In particular, MAML constructs parameters of the task-specific policy, $\phi$, using gradient of $L_T$ w.r.t. $\theta$:
+\begin{equation}
+\label{equat_2}
+\phi := \theta - \alpha \nabla_{\theta}L_T(\bm{\tau}_{\theta}^{1:K}), \textnormal{ where } L_T(\bm{\tau}_{\theta}^{1:K}) := \frac{1}{K}\sum\limits_{k=1}^{K}L_T(\bm{\tau}_{\theta}^{k}), \textnormal{ and } \bm{\tau}_{\theta}^{k} \sim P_T(\bm{\tau}|\theta)
+\end{equation}
+We call (\ref{equat_2}) the \textit{adaptation update} with a step $\alpha$. The adaptation update is parametrized by $\theta$, which we optimize by minimizing the expected loss over the distribution of tasks, $D(T)$---the \textit{meta-loss}:
+\begin{equation}
+\label{equat_3}
+\min\limits_{\theta}\mathbb{E}_{T \sim D(T)}[\mathcal{L}_T(\theta)], \text{ where } \mathcal{L}_{T}(\theta) := \mathbb{E}_{\tau_{\theta}^{1:K} \sim P_T(\bm{\tau}|\theta)}[\mathbb{E}_{\bm{\tau}_{\phi} \sim P_{T}(\bm{\tau}|\phi)}[L_T(\bm{\tau}_{\phi})|\bm{\tau}_{\theta}^{1:K}, \theta]]
+\end{equation}
+where $\bm{\tau}_{\theta}$ and $\bm{\tau}_{\phi}$ are trajectories obtained under $\pi_{\theta}$ and $\pi_{\phi}$, respectively.
+\paragraph{}In general, we can think of the task, trajectories, and policies, as random variables, where $\phi$ is generated from some conditional distribution $P_T(\phi|\theta, \bm{\tau}_{1:k}) := \delta(\theta - \alpha\nabla_{\theta}\frac{1}{k}\sum_{k=1}^{K}L_T(\bm{\tau}_k))$. To optimize, we can use the policy gradient method, where the gradient of $\mathcal{L}_T$ is as follows:
+\begin{equation}
+\label{equat_4}
+\nabla_{\theta}\mathcal{L}_{T}(\theta) = \mathbb{E}_{\begin{array}{l}
+\bm{\tau}_{\theta}^{1:K} \sim P_T(\bm{\tau}|\theta)\\ \bm{\tau}_{\phi} \sim P_T(\bm{\tau}|\phi)
+\end{array}}\left[L_{T}(\bm{\tau}_{\phi})\left[\nabla_{\theta}\log \pi_{\phi}(\bm{\tau}_{\phi}) + \nabla_{\theta}\sum\limits_{k=1}^{K}\log\pi_{\theta}(\bm{\tau}_{\theta}^k) \right] \right]
+\end{equation}
+The expected loss on a task, $\mathcal{L}_T$, can be optimized with trust-region policy (TRPO) or proximal policy (PPO) optimization methods.
+
+\begin{algorithm}
+\caption{Meta-learning at training time}
+\begin{algorithmic}[1]
+	\Require Distribution over pairs of tasks, $\mathcal{P}(T_{i}, T_{i+1})$, learning rate, $\beta$.
+	\State Randomly initialize $\theta$ and $\alpha$.
+	\Repeat
+		\State Sample a batch of task pairs, $\{(T_{i}, T_{i+1})\}_{i=1}^{n}$.
+		\For {\textbf{All} task pairs $T_{i}, T_{i+1}$ in the batch}.
+			\State Sample traj. $\bm{\tau}_{\theta}^{1:K}$ from $T_{i}$ using $\pi_{\theta}$.
+			\State Compute $\phi= \phi(\bm{\tau}_{\theta}^{1:K}, \theta, \alpha)$ as given in (\ref{equat_7}).
+			\State Sample traj. $\bm{\tau}_{\phi}$ from $T_{i+1}$ using $\pi_{\phi}$.
+		\EndFor
+		\State Compute $\nabla_{\theta}\mathcal{L}_{T_i, T_{i+1}}$ and $\nabla_{\alpha}\mathcal{L}_{T_i, T_{i+1}}$ using $\bm{\tau}_{\theta}^{1:K}$ and $\bm{\tau}_{\phi}$ as given in (\ref{equat_8}).
+		\State Update $\theta \leftarrow \theta + \beta\nabla_{\theta}\mathcal{L}_{T}(\theta, \alpha)$.
+		\State Update $\alpha \leftarrow \alpha + \beta \nabla_{\alpha}\mathcal{L}_T(\theta, \alpha)$.
+	\Until {Convergence}
+	\Ensure Optimal $\theta^{*}$ and $\alpha^{*}$.
+\end{algorithmic}
+\end{algorithm}
+
+\begin{algorithm}
+\caption{Adaptation at execution time.}
+\begin{algorithmic} [1]
+	\Require A Stream of tasks, $T_1, T_2, T_3, ...$.
+	\State Initialize $\phi = \theta$.
+	\While $there are new incoming tasks$
+		\State Get a new task, $T_i$, from the stream.
+		\State Solve $T_i$ using $\pi_{\phi}$ policy.
+		\State While solving $T_i$, collect trajectories, $\bm{\tau}_{i, \phi}^{1:K}$.
+		\State Update $\phi \leftarrow \phi(\bm{\tau}_{i, \phi}^{1:K}, \theta^{*}, \alpha^{*})$ using importance-corrected meta-update as in (\ref{equat_9}).
+	\EndWhile
+\end{algorithmic}
+\end{algorithm}
+\begin{equation}
+\label{equat_5}
+\min\limits_{\theta}\mathbb{E}_{\mathcal{P}(T_0), \mathcal{P}(T_{i+1}|T_i)}\left[ \sum\limits_{i=1}^{L}\mathcal{L}_{T_i, T_{i+1}}(\theta) \right]
+\end{equation}
+
+\begin{equation}
+\label{equat_6}
+\mathcal{L}_{T_i, T_{i+1}}(\theta) := \mathbb{E}_{\bm{\tau}_{i,\theta}^{1:K}\sim P_{T_i}(\bm{\tau}|\theta)}\left[ \mathbb{E}_{\bm{\tau}_{i+1}, \phi \sim P_{T_{i+1}}(\bm{\tau}|\phi)} [L_{T_{i+1}}(\bm{\tau}_{i+1, \phi})|\bm{\tau}_{i, \theta}^{1:K}, \theta] \right]
+\end{equation}
+
+\begin{equation}
+\label{equat_7}
+\begin{array}{rcl}
+\phi_{i}^{0} & := & \theta, \qquad \bm{\tau}_{\theta}^{1:K} \sim P_{T_i}(\bm{\tau}|\theta), \\
+\phi_{i}^{m} & := & \phi_{i}^{m-1} - \alpha_m\nabla_{\phi_i^{m-1}}L_{T_i}\left(\bm{\tau}_{i, \phi_{i}^{m-1}}^{1:K}\right), m = 1, ..., M-1,\\
+\phi_{i+1} & := & \phi_{i}^{M-1} - \alpha_{M}\nabla_{\phi_i^{M-1}}L_{T_{i}}\left( \bm{\tau}_{i, \phi_{i}^{M-1}}^{1:K} \right)
+\end{array}
+\end{equation}
+
+\begin{equation}
+\label{equat_8}
+\nabla_{\theta, \alpha}\mathcal{L}_{T_i, T_{i+1}}(\theta, \alpha) = \\
+ \mathbb{E}_{
+\begin{array}{l}
+\bm{\tau}_{i, \theta}^{1:K} \sim P_{T_{i}}(\bm{\tau}|\theta) \\
+\bm{\tau}_{i+1, \phi} \sim P_{T_{i+1}}(\bm{\tau}|\phi)
+\end{array}}\left[ L_{T_{i+1}}(\bm{\tau}_{i+1, \phi}) \left[ \nabla_{\theta, \alpha} \log \pi_{\theta}(\bm{\tau}_{i+1}, \phi) + \nabla_{\theta}\sum\limits_{k=1}^{K} \log\pi_{\theta}(\bm{\tau}_{i, \theta}^{k}) \right] \right]
+\end{equation}
+
+\begin{equation}
+\label{equat_9}
+\phi_{i} := \theta - \alpha \frac{1}{K}\sum\limits_{k=1}^{K}\left( \frac{\pi_{\theta}(\bm{\tau}^{k})}{\pi_{\phi_{i-1}}(\bm{\tau}^{k})}\right) \nabla_{\theta}L_{T_{i-1}}(\bm{\tau}^{k}), \qquad \bm{\tau}^{1:K} \sim P_{T_{i-1}}(\bm{\tau}|\phi_{i-1})
+\end{equation}
 %\bibliographystyle{plain}
 \bibliographystyle{unsrt}
 \bibliography{reference}
